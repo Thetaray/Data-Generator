@@ -46,7 +46,7 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <docker.image.prefix>springio</docker.image.prefix>
+        <docker.image.prefix>172.16.1.68:5000/thetaray</docker.image.prefix>
     </properties>
 
 
