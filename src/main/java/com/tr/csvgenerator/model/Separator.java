@@ -8,6 +8,10 @@ public enum Separator {
     TAB('\t'),
     PIPE('|');
 
+    public void setSeparator(char separator) {
+        this.separator = separator;
+    }
+
     char separator;
 
     Separator(char separator) {

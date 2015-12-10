@@ -67,9 +67,10 @@ public class CsvGeneratorServiceImpl implements CsvGeneratorService {
     }
 
     @Override
-    public boolean createCsv(CsvConfigDTO csvConfig) throws IOException {
+    public boolean createCsv(CsvConfigDTO csvConfig) throws IOException, InterruptedException {
         this.csvConfigDTO = csvConfig;
         while (csvConfig.getNumberOfFilesToGen() != 0) {
+            Thread.sleep(1000);
             long time = new Date().getTime();
             this.csvWriter = createWriter();
             long numberOfBytes = 0;

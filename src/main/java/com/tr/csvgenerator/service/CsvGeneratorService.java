@@ -10,5 +10,5 @@ import java.io.IOException;
 public interface CsvGeneratorService {
 
     String validateCsvConfig(CsvConfigDTO csvConfigDTO);
-    boolean createCsv(CsvConfigDTO csvConfig) throws IOException;
+    boolean createCsv(CsvConfigDTO csvConfig) throws IOException, InterruptedException;
 }

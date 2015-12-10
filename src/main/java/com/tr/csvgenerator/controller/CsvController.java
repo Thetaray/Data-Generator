@@ -39,7 +39,7 @@ public class CsvController {
     @ApiResponses({@ApiResponse(code = 200, message = "files created", response = TrApiResponse.class)})
     @RequestMapping(value = "/generate", method = RequestMethod.POST, produces = "application/json")
     public TrApiResponse generateCsv(
-            @ApiParam(value = "json example also has the default values", required = true) @Validated @RequestBody CsvConfigDTO csvConfigDTO) throws IOException {
+            @ApiParam(value = "json example also has the default values", required = true) @Validated @RequestBody CsvConfigDTO csvConfigDTO) throws IOException, InterruptedException {
         String validationMessage = csvGeneratorService.validateCsvConfig(csvConfigDTO);
         TrApiResponse trApiResponse = new TrApiResponse();
         if (!validationMessage.isEmpty()) {
