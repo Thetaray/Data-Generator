@@ -112,9 +112,9 @@ public class CsvGeneratorTest /*extends AbstractTest*/ {
     public void createCsv() throws Exception {
         CsvGeneratorService generatorService = new CsvGeneratorServiceImpl();
         CsvConfigDTO configDTO = new CsvConfigDTO();
-        configDTO.setNumberOfFilesToGen(2);
+        configDTO.setNumberOfFilesToGen(15);
         configDTO.setRandomBatch(5000);
-        configDTO.setFileSizeInMB(250);
+        configDTO.setFileSizeInMB(15);
         generatorService.validateCsvConfig(configDTO);
         generatorService.createCsv(configDTO);
     }

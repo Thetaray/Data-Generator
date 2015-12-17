@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -70,7 +71,6 @@ public class CsvGeneratorServiceImpl implements CsvGeneratorService {
     public boolean createCsv(CsvConfigDTO csvConfig) throws IOException, InterruptedException {
         this.csvConfigDTO = csvConfig;
         while (csvConfig.getNumberOfFilesToGen() != 0) {
-            Thread.sleep(1000);
             long time = new Date().getTime();
             this.csvWriter = createWriter();
             long numberOfBytes = 0;
@@ -141,9 +141,11 @@ public class CsvGeneratorServiceImpl implements CsvGeneratorService {
     }
 
     private CSVWriter createWriter() throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HHmmss").format(new Date());
+        Date date = new Date();
+        Timestamp currentTimestamp = new Timestamp(date.getTime());
+        String timeStamp = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date());
         checkDirectory(csvConfigDTO.getOutputFolder());
-        csvFilename = new File(csvConfigDTO.getOutputFolder() + csvConfigDTO.getOutputfileName() + "_" + timeStamp + ".csv");
+        csvFilename = new File(csvConfigDTO.getOutputFolder() + csvConfigDTO.getOutputfileName() + "_" + currentTimestamp + ".csv");
         return new CSVWriter(new FileWriter(csvFilename), csvConfigDTO.getSeparator().getSeparatorAsChar());
     }
 }
