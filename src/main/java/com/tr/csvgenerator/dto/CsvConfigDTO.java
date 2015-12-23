@@ -16,9 +16,12 @@ public class CsvConfigDTO {
     private Separator separator = Separator.DEFAULT;
     private int randomBatch = 10000;
 
-    private String outputFolder = "target/";
-    private String outputfileName = "Test";
+    private int multiFolderWriting = 0;
+    private int numberOfFoldersToGen = 0;
 
+    private String outputFolder = "target/";
+
+    private String outputfileName = "Test";
     private String[] columnsList = {};
 
     public void oneFileCreated(){
@@ -73,6 +76,14 @@ public class CsvConfigDTO {
         this.maxValue = maxValue;
     }
 
+    public int getNumberOfFoldersToGen() {
+        return numberOfFoldersToGen;
+    }
+
+    public void setNumberOfFoldersToGen(int numberOfFoldersToGen) {
+        this.numberOfFoldersToGen = numberOfFoldersToGen;
+    }
+
     public String getOutputFolder() {
         return outputFolder;
     }
@@ -112,4 +123,13 @@ public class CsvConfigDTO {
     public void setRandomBatch(int randomBatch) {
         this.randomBatch = randomBatch;
     }
+
+    public int getMultiFolderWriting() {
+        return multiFolderWriting;
+    }
+
+    public void setMultiFolderWriting(int multiFolderWriting) {
+        this.multiFolderWriting = multiFolderWriting;
+    }
+
 }

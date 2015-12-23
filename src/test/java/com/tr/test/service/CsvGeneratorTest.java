@@ -5,6 +5,7 @@ import com.tr.csvgenerator.dto.CsvConfigDTO;
 import com.tr.csvgenerator.service.CsvGeneratorService;
 import com.tr.csvgenerator.service.CsvGeneratorServiceImpl;
 import org.junit.Test;
+import org.springframework.test.context.TestExecutionListeners;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -112,6 +113,20 @@ public class CsvGeneratorTest /*extends AbstractTest*/ {
     public void createCsv() throws Exception {
         CsvGeneratorService generatorService = new CsvGeneratorServiceImpl();
         CsvConfigDTO configDTO = new CsvConfigDTO();
+        configDTO.setNumberOfFilesToGen(15);
+        configDTO.setRandomBatch(5000);
+        configDTO.setFileSizeInMB(15);
+        generatorService.validateCsvConfig(configDTO);
+        generatorService.createCsv(configDTO);
+    }
+
+    @Test
+    public void createMultiFolders() throws Exception{
+        CsvGeneratorService generatorService = new CsvGeneratorServiceImpl();
+        CsvConfigDTO configDTO = new CsvConfigDTO();
+        configDTO.setNumberOfFoldersToGen(1);
+        configDTO.setMultiFolderWriting(1);
+        configDTO.setNumberOfFoldersToGen(4);
         configDTO.setNumberOfFilesToGen(15);
         configDTO.setRandomBatch(5000);
         configDTO.setFileSizeInMB(15);

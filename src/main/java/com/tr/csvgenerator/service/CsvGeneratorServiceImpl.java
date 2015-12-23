@@ -63,62 +63,37 @@ public class CsvGeneratorServiceImpl implements CsvGeneratorService {
                 csvConfigDTO.setColumnsList(columnList);
             }
         }
-
+        if(csvConfigDTO.getMultiFolderWriting() != 1 && csvConfigDTO.getMultiFolderWriting() != 0 ){
+            errorMessage += "Please choose a mode for multi folder working";
+        }
+        else{
+            if(csvConfigDTO.getMultiFolderWriting() == 1){
+                if(csvConfigDTO.getNumberOfFoldersToGen() <= 0){
+                    errorMessage += "Number of folder must be greater than 0";
+                }
+            }
+        }
         return errorMessage;
     }
 
     @Override
     public boolean createCsv(CsvConfigDTO csvConfig) throws IOException, InterruptedException {
         this.csvConfigDTO = csvConfig;
-        while (csvConfig.getNumberOfFilesToGen() != 0) {
-            long time = new Date().getTime();
-            this.csvWriter = createWriter();
-            long numberOfBytes = 0;
-            Random r = new Random();
-            String[] stringsColumn;
-            int i = 0;
-            List<String[]> data = new ArrayList<>();
-            List<String[]> biggerData = new ArrayList<>();
-            while (numberOfBytes < (csvConfig.getFileSizeInMB() * 1000000)) {
-                if (numberOfBytes > 0) {
-                    data.clear();
-                }
-                while (i < csvConfig.getRandomBatch()) {
-                    stringsColumn = new String[csvConfig.getNumberOfColumns()];
-                    if (i == 0 && numberOfBytes == 0) {
-                        stringsColumn = csvConfig.getColumnsList();
-                    }
-                    else {
-                        for (int col = 0; col < csvConfig.getNumberOfColumns(); col++) {
-                            int random = r.nextInt(csvConfig.getMaxValue());
-                            stringsColumn[col] = Integer.toString(random);
-                        }
-                    }
-
-                    data.add(stringsColumn);
-                    i++;
-                }
-                i = 0;
-                biggerData.addAll(data);
-                for (int j = 0; j < biggerData.size(); j++) {
-                    csvWriter.writeAll(biggerData);
-                    csvWriter.flush();
-                    numberOfBytes = csvFilename.length();
-//                    if(j % 5 == 0) {
-//                        System.out.println(humanReadableByteCount(numberOfBytes, true));
-//                    }
-                    if(numberOfBytes > (csvConfig.getFileSizeInMB() * 1000000)){
-                        break;
-                    }
-                }
-
+        String outputFolder = csvConfig.getOutputFolder();
+        long time = new Date().getTime();
+        if(csvConfigDTO.getMultiFolderWriting() == 1){
+            for(int i = 0 ; i < csvConfigDTO.getNumberOfFoldersToGen() ; i++){
+                csvConfig.setOutputFolder(createMultiFolders().getAbsolutePath() + "/");
+                creationOfCsv(csvConfig);
+                csvConfig.setOutputFolder(outputFolder);
             }
-            csvConfig.oneFileCreated();
-            long time2 = new Date().getTime();
-            System.out.println("Took " + TimeUnit.SECONDS.convert(time2 - time, TimeUnit.MILLISECONDS) + " Seconds");
         }
-        csvWriter.close();
-        return true;
+        else{
+            creationOfCsv(csvConfig);
+            }
+        long time2 = new Date().getTime();
+        System.out.println("Took " + TimeUnit.SECONDS.convert(time2 - time, TimeUnit.MILLISECONDS) + " Seconds");
+        return  true;
     }
 
     private String getIntToString(int value) {
@@ -140,12 +115,75 @@ public class CsvGeneratorServiceImpl implements CsvGeneratorService {
             dir.mkdirs();
     }
 
+    private void creationOfCsv(CsvConfigDTO csvConfig) throws IOException, InterruptedException {
+        int numberFilesToCreate = csvConfig.getNumberOfFilesToGen();
+        while (numberFilesToCreate != 0) {
+            this.csvWriter = createWriter();
+            long numberOfBytes = 0;
+            Random r = new Random();
+            String[] stringsColumn;
+            int i = 0;
+            List<String[]> data = new ArrayList<>();
+            List<String[]> biggerData = new ArrayList<>();
+            while (numberOfBytes < (csvConfig.getFileSizeInMB() * 1000000)) {
+                if (numberOfBytes > 0) {
+                    data.clear();
+                }
+                while (i < csvConfig.getRandomBatch()) {
+                    stringsColumn = new String[csvConfig.getNumberOfColumns()];
+                    if (i == 0 && numberOfBytes == 0) {
+                        stringsColumn = csvConfig.getColumnsList();
+                    } else {
+                        for (int col = 0; col < csvConfig.getNumberOfColumns(); col++) {
+                            int random = r.nextInt(csvConfig.getMaxValue());
+                            stringsColumn[col] = Integer.toString(random);
+                        }
+                    }
+
+                    data.add(stringsColumn);
+                    i++;
+                }
+                i = 0;
+                biggerData.addAll(data);
+                for (int j = 0; j < biggerData.size(); j++) {
+                    csvWriter.writeAll(biggerData);
+                    csvWriter.flush();
+                    numberOfBytes = csvFilename.length();
+//                    if(j % 5 == 0) {
+//                        System.out.println(humanReadableByteCount(numberOfBytes, true));
+//                    }
+                    if (numberOfBytes > (csvConfig.getFileSizeInMB() * 1000000)) {
+                        break;
+                    }
+                }
+
+            }
+            numberFilesToCreate--;
+        }
+        csvWriter.close();
+    }
+
+    private  File createMultiFolders(){
+        File file = null;
+        Date date = new Date();
+        Timestamp currentTimestamp = new Timestamp(date.getTime());
+        file = new File(csvConfigDTO.getOutputFolder() + currentTimestamp.toString().replaceAll(" ",""));
+        if(!file.exists()){
+            if (file.mkdir()) {
+                System.out.println("Directory is created!");
+                } else {
+                    System.out.println("Failed to create directory!");
+                }
+            }
+        return  file;
+    }
+
     private CSVWriter createWriter() throws IOException {
         Date date = new Date();
         Timestamp currentTimestamp = new Timestamp(date.getTime());
-        String timeStamp = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date());
         checkDirectory(csvConfigDTO.getOutputFolder());
         csvFilename = new File(csvConfigDTO.getOutputFolder() + csvConfigDTO.getOutputfileName() + "_" + currentTimestamp + ".csv");
         return new CSVWriter(new FileWriter(csvFilename), csvConfigDTO.getSeparator().getSeparatorAsChar());
     }
+
 }
