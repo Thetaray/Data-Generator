@@ -167,9 +167,13 @@ public class CsvGeneratorServiceImpl implements CsvGeneratorService {
         File file = null;
         Date date = new Date();
         Timestamp currentTimestamp = new Timestamp(date.getTime());
+        if(csvConfigDTO.getFolderNames() == null){
+            csvConfigDTO.setFolderNames(new ArrayList<>());
+        }
         file = new File(csvConfigDTO.getOutputFolder() + currentTimestamp.toString().replaceAll(" ",""));
         if(!file.exists()){
             if (file.mkdir()) {
+                    csvConfigDTO.getFolderNames().add(currentTimestamp.toString().replaceAll(" ",""));
                 System.out.println("Directory is created!");
                 } else {
                     System.out.println("Failed to create directory!");

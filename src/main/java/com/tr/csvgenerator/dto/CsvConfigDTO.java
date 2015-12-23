@@ -1,6 +1,7 @@
 package com.tr.csvgenerator.dto;
 
 import com.tr.csvgenerator.model.Separator;
+import java.util.ArrayList;
 
 /**
  * Created by erez on 11/25/15.
@@ -16,18 +17,19 @@ public class CsvConfigDTO {
     private Separator separator = Separator.DEFAULT;
     private int randomBatch = 10000;
 
+    private ArrayList<String> folderNames = null;
+
     private int multiFolderWriting = 0;
+
     private int numberOfFoldersToGen = 0;
-
     private String outputFolder = "target/";
-
     private String outputfileName = "Test";
+
     private String[] columnsList = {};
 
     public void oneFileCreated(){
         numberOfFilesToGen--;
     }
-
     public String getValidationError() {
         return validationError;
     }
@@ -38,6 +40,10 @@ public class CsvConfigDTO {
 
     public int getNumberOfFilesToGen() {
         return numberOfFilesToGen;
+    }
+
+    public void setFolderNames(ArrayList<String> folderNames) {
+        this.folderNames = folderNames;
     }
 
     public void setNumberOfFilesToGen(int numberOfFilesToGen) {
@@ -59,6 +65,11 @@ public class CsvConfigDTO {
     public void setNumberOfColumns(int numberOfColumns) {
         this.numberOfColumns = numberOfColumns;
     }
+
+    public ArrayList<String> getFolderNames() {
+        return folderNames;
+    }
+
 
     public int getMinValue() {
         return minValue;
