@@ -173,7 +173,7 @@ public class CsvGeneratorServiceImpl implements CsvGeneratorService {
         file = new File(csvConfigDTO.getOutputFolder() + currentTimestamp.toString().replaceAll(" ","").replaceAll("[\\s.]", ""));
         if(!file.exists()){
             if (file.mkdir()) {
-                    csvConfigDTO.getFolderNames().add(currentTimestamp.toString().replaceAll(" ",""));
+                    csvConfigDTO.getFolderNames().add(currentTimestamp.toString().replaceAll(" ","").replaceAll("[\\s.]", ""));
                 System.out.println("Directory is created!");
                 } else {
                     System.out.println("Failed to create directory!");
