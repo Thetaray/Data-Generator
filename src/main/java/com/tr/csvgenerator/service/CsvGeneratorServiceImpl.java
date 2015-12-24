@@ -170,7 +170,7 @@ public class CsvGeneratorServiceImpl implements CsvGeneratorService {
         if(csvConfigDTO.getFolderNames() == null){
             csvConfigDTO.setFolderNames(new ArrayList<>());
         }
-        file = new File(csvConfigDTO.getOutputFolder() + currentTimestamp.toString().replaceAll(" ",""));
+        file = new File(csvConfigDTO.getOutputFolder() + currentTimestamp.toString().replaceAll(" ","").replaceAll("[\\s.]", ""));
         if(!file.exists()){
             if (file.mkdir()) {
                     csvConfigDTO.getFolderNames().add(currentTimestamp.toString().replaceAll(" ",""));
