@@ -1,7 +1,9 @@
 package com.tr.csvgenerator.controller;
 
+import com.tr.csvgenerator.ExetendDataService.ExtendCsvService;
 import com.tr.csvgenerator.common.TrApiResponse;
 import com.tr.csvgenerator.dto.CsvConfigDTO;
+import com.tr.csvgenerator.dto.CsvExtendableDTO;
 import com.tr.csvgenerator.service.CsvGeneratorService;
 import com.wordnik.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 import static com.tr.csvgenerator.common.TrApiResponse.StatusCode;
 
@@ -26,6 +29,8 @@ public class CsvController {
 
     @Autowired
     private CsvGeneratorService csvGeneratorService;
+    @Autowired
+    private ExtendCsvService extendCsvService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/json")
     public TrApiResponse index() {
@@ -57,5 +62,26 @@ public class CsvController {
         }
             return trApiResponse;
         }
+
+    @RequestMapping(value = "/duplicate",method = RequestMethod.POST,produces = "application/json")
+    public  TrApiResponse duplicateCsv(
+            @ApiParam(value = "json example also has the default values" , required = true)@Validated @RequestBody CsvExtendableDTO csvExtendableDTO) throws IOException, ExecutionException, InterruptedException {
+        String validationMessage = extendCsvService.validateInput(csvExtendableDTO);
+        TrApiResponse trApiResponse = new TrApiResponse();
+        if(validationMessage.equalsIgnoreCase("No Errors")){
+            boolean result = extendCsvService.extendToCsvFile(csvExtendableDTO);
+            if(result == true){
+                trApiResponse.setOk();
+                trApiResponse.put("result",csvExtendableDTO);
+            }
+            else {
+                trApiResponse.setError(csvExtendableDTO.getValidationError());
+            }
+        }else{
+            trApiResponse.setError(validationMessage);
+            trApiResponse.put("result",csvExtendableDTO);
+        }
+        return  trApiResponse;
+    }
 
     }

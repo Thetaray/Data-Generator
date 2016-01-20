@@ -1,19 +1,22 @@
 package com.tr.test.service;
 
 import au.com.bytecode.opencsv.CSVWriter;
+import com.tr.csvgenerator.ExetendDataService.ExtendCsvServiceServiceImpl;
 import com.tr.csvgenerator.dto.CsvConfigDTO;
+import com.tr.csvgenerator.dto.CsvExtendableDTO;
 import com.tr.csvgenerator.service.CsvGeneratorService;
 import com.tr.csvgenerator.service.CsvGeneratorServiceImpl;
 import org.junit.Test;
-import org.springframework.test.context.TestExecutionListeners;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -132,5 +135,17 @@ public class CsvGeneratorTest /*extends AbstractTest*/ {
         configDTO.setFileSizeInMB(15);
         generatorService.validateCsvConfig(configDTO);
         generatorService.createCsv(configDTO);
+    }
+
+    @Test
+    public void testToReadCsvFile() throws IOException, ExecutionException, InterruptedException {
+        CsvExtendableDTO dto = new CsvExtendableDTO();
+        ExtendCsvServiceServiceImpl impl = new ExtendCsvServiceServiceImpl();
+        dto.setTotalNumberOfColumnsInNewFile(350);
+        dto.setTotalNumberOfRowsInNewFile(80000);
+        dto.setNumberOfFiles(5);
+        dto.setPathToCsv("/home/roman/Documents/Data_for_Tests/Detect_attack.tuesday.csv");
+        dto.setOutputFolder("/home/roman/Documents/CsvgeneratorTemp/");
+        impl.extendToCsvFile(dto);
     }
 }
