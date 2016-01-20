@@ -137,15 +137,4 @@ public class CsvGeneratorTest /*extends AbstractTest*/ {
         generatorService.createCsv(configDTO);
     }
 
-    @Test
-    public void testToReadCsvFile() throws IOException, ExecutionException, InterruptedException {
-        CsvExtendableDTO dto = new CsvExtendableDTO();
-        ExtendCsvServiceServiceImpl impl = new ExtendCsvServiceServiceImpl();
-        dto.setTotalNumberOfColumnsInNewFile(350);
-        dto.setTotalNumberOfRowsInNewFile(80000);
-        dto.setNumberOfFiles(5);
-        dto.setPathToCsv("/home/roman/Documents/Data_for_Tests/Detect_attack.tuesday.csv");
-        dto.setOutputFolder("/home/roman/Documents/CsvgeneratorTemp/");
-        impl.extendToCsvFile(dto);
-    }
 }
