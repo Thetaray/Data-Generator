@@ -93,7 +93,6 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
         int alphaBeticHeader = 1;
         boolean firstRow = true;
         String[] rowFromFile = m_reader.readNext();
-        int numberOfRowInOriginalFile =  0;
         int numberOfOriginalColumns = 0;
         while (rowFromFile != null){
             numberOfOriginalColumns = rowFromFile.length;
@@ -113,11 +112,11 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
             }
             m_writer.writeNext(newRow);
             firstRow = false;
-            numberOfRowInOriginalFile++;
+            numberOfOriginalsRowInFile++;
             rowFromFile = m_reader.readNext();
         }
         m_reader.close();
-        extensionDto.setTotalNumberOfRowsInNewFile(extensionDto.getTotalNumberOfRowsInNewFile()- numberOfRowInOriginalFile);
+        extensionDto.setTotalNumberOfRowsInNewFile(extensionDto.getTotalNumberOfRowsInNewFile() - numberOfOriginalsRowInFile);
     }
 
     private void  readByLineAndAddRows() throws IOException {

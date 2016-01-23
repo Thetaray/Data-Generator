@@ -25,7 +25,7 @@ public class AnalyzeOfFieldInCsv {
                 if(value.contains(".")){
                     float number = Float.parseFloat(value);
                     //number = number + (random.nextFloat());
-                    number = number + minValue*random.nextInt(500);
+                    number = number + minValue*(random.nextInt(500) + 1);
                     row[index] = Float.toString(number);
                 }
                 else{
