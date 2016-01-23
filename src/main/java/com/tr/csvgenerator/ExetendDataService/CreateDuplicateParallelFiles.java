@@ -1,8 +1,15 @@
 package com.tr.csvgenerator.ExetendDataService;
 
+import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
-import it.unimi.dsi.fastutil.objects.ObjectList;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.concurrent.Callable;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * Created by roman on 19/01/16.
@@ -10,11 +17,12 @@ import java.util.concurrent.Callable;
 public class CreateDuplicateParallelFiles implements Callable<Boolean> {
 
     private CSVWriter writer;
-    private ObjectList<String[]> dataDemo;
     private AnalyzeOfFieldInCsv parseFieldsOfCsv;
+    private CSVReader m_Reader;
+    private Lock readLock;
 
-    public CreateDuplicateParallelFiles(ObjectList<String[]> list, CSVWriter i_writer){
-        this.dataDemo = list;
+    public CreateDuplicateParallelFiles(CSVReader i_reader, CSVWriter i_writer) throws FileNotFoundException {
+       m_Reader = i_reader;
         this.writer = i_writer;
         parseFieldsOfCsv = new AnalyzeOfFieldInCsv();
     }
@@ -24,16 +32,19 @@ public class CreateDuplicateParallelFiles implements Callable<Boolean> {
     @Override
     public Boolean call() throws Exception {
         boolean finish = true;
-        for(String[] row : dataDemo){
-            String [] newRow = new String[row.length];
-            int indexOfForRow = 0;
-            for(String charFromRow : row) {
-                parseFieldsOfCsv.parseField(newRow,charFromRow,indexOfForRow);
-                indexOfForRow ++;
+        String[] rowFromFile = null;
+        do{
+            rowFromFile = m_Reader.readNext();
+            if(rowFromFile != null){
+                String[] newRow = new String[rowFromFile.length];
+                int indexOfForRow = 0;
+                for(String valueFromValue : rowFromFile){
+                    parseFieldsOfCsv.parseField(newRow,valueFromValue,indexOfForRow);
+                    indexOfForRow ++;
+                }
+                writer.writeNext(newRow);
             }
-            writer.writeNext(newRow);
-        }
-        writer.flush();
+        }while (rowFromFile != null);
         writer.close();
         return finish;
     }

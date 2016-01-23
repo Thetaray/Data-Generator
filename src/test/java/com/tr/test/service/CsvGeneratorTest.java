@@ -1,11 +1,13 @@
 package com.tr.test.service;
 
 import au.com.bytecode.opencsv.CSVWriter;
+import com.tr.csvgenerator.ExetendDataService.ExtendCsvService;
 import com.tr.csvgenerator.ExetendDataService.ExtendCsvServiceServiceImpl;
 import com.tr.csvgenerator.dto.CsvConfigDTO;
 import com.tr.csvgenerator.dto.CsvExtendableDTO;
 import com.tr.csvgenerator.service.CsvGeneratorService;
 import com.tr.csvgenerator.service.CsvGeneratorServiceImpl;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -137,4 +139,20 @@ public class CsvGeneratorTest /*extends AbstractTest*/ {
         generatorService.createCsv(configDTO);
     }
 
+    @Ignore
+    @Test
+    public void createDuplicateOfFile() throws InterruptedException, ExecutionException, IOException {
+        ExtendCsvService extd  = new ExtendCsvServiceServiceImpl();
+        CsvExtendableDTO dto  = new CsvExtendableDTO();
+        dto.setNumberOfFiles(4);
+        dto.setHasHeader(0);
+        dto.setTotalNumberOfRowsInNewFile(600000);
+        dto.setTotalNumberOfColumnsInNewFile(450);
+        dto.setFileName("Roma");
+        dto.setOutputFolder("/home/roman/Documents/CsvgeneratorTemp/");
+        //dto.setPathToCsv("/home/roman/Documents/Data_for_Tests/OffLine_BLDG_66_HVAC.csv");
+        dto.setPathToCsv("/home/roman/Documents/test Data Csv/raw_data_for_demo_20052015.csv");
+        extd.validateInput(dto);
+        extd.extendToCsvFile(dto);
+    }
 }

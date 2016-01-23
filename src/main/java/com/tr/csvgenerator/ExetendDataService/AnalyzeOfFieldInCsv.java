@@ -9,6 +9,8 @@ import java.util.regex.Pattern;
  */
 public class AnalyzeOfFieldInCsv {
 
+    private float minValue = (float) 0.00000001;
+
     private  Random random;
 
     public AnalyzeOfFieldInCsv(){
@@ -22,7 +24,8 @@ public class AnalyzeOfFieldInCsv {
             if(!m.find()){
                 if(value.contains(".")){
                     float number = Float.parseFloat(value);
-                    number = number + (random.nextFloat());
+                    //number = number + (random.nextFloat());
+                    number = number + minValue*random.nextInt(500);
                     row[index] = Float.toString(number);
                 }
                 else{

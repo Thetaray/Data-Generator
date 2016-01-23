@@ -41,7 +41,13 @@
 			<artifactId>opencsv</artifactId>
 			<version>2.3</version>
 		</dependency>
-        <dependency>
+		<dependency>
+			<groupId>net.sf.supercsv</groupId>
+			<artifactId>super-csv</artifactId>
+			<version>2.4.0</version>
+		</dependency>
+
+		<dependency>
             <groupId>org.ajar</groupId>
             <artifactId>swagger-spring-mvc-ui</artifactId>
             <version>0.1</version>

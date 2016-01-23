@@ -7,6 +7,8 @@ import com.tr.csvgenerator.model.Separator;
  */
 public class CsvExtendableDTO {
 
+    private int hasHeader = 1;
+
     private int numberOfFiles = 1;
 
     private Separator separator = Separator.DEFAULT;
@@ -27,6 +29,7 @@ public class CsvExtendableDTO {
         this.numberOfFiles = numberOfFiles;
     }
 
+
     public int getNumberOfFiles() {
         return numberOfFiles;
     }
@@ -37,6 +40,14 @@ public class CsvExtendableDTO {
 
     public void setSeparator(Separator separator) {
         this.separator = separator;
+    }
+
+    public int getHasHeader() {
+        return hasHeader;
+    }
+
+    public void setHasHeader(int hasHeader) {
+        this.hasHeader = hasHeader;
     }
 
     public String getFileName() {
