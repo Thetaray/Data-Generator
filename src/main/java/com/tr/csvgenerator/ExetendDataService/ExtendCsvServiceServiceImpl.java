@@ -22,13 +22,17 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Service
 public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
 
+    private int ColumnHeaderName = 1;
     private CsvExtendableDTO extensionDto;
     private File csvFilename;
     private CSVReader m_reader;
     private CSVWriter m_writer;
     private  AnalyzeOfFieldInCsv analyzeOfFieldInCsv = new AnalyzeOfFieldInCsv();
-    private String demo_File_Name;
+    private String demo_File_Name_First;
+    private String Full_Demo_File;
     private  int numberOfOriginalsRowInFile = 0;
+    private  boolean isDemoFile = true;
+    private boolean isFullDemoFile = false;
     @Override
     public String validateInput(CsvExtendableDTO dto) {
         StringBuffer errorMessage = new StringBuffer();
@@ -75,7 +79,6 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
     }
 
     private String getIntToString(int value) {
-
         StringBuffer result = new StringBuffer();
         if(value == 0){
             result.append("Header");
@@ -87,10 +90,15 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
         return result.toString();
     }
 
+    private String[] headerTransfomation(String []  header ,String [] newRow){
+        for(String HeaderValue : header){
+
+        }
+        return  null;
+    }
 
     private void readByLineAndAddColumns() throws IOException {
-        m_reader = new CSVReader(new BufferedReader(new FileReader(extensionDto.getPathToCsv())));
-        int alphaBeticHeader = 1;
+        m_reader = new CSVReader(new FileReader(extensionDto.getPathToCsv()));
         boolean firstRow = true;
         String[] rowFromFile = m_reader.readNext();
         int numberOfOriginalColumns = 0;
@@ -102,8 +110,9 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
                     newRow[j] = rowFromFile[j].trim();
                 } else {
                     int index = j % numberOfOriginalColumns;
+                    //Adding new values to header
                     if(firstRow && extensionDto.getHasHeader() == 1){
-                        analyzeOfFieldInCsv.parseField(newRow,rowFromFile[index].trim() + getIntToString(alphaBeticHeader++),j);
+                        analyzeOfFieldInCsv.parseField(newRow,rowFromFile[index].trim() + getIntToString(ColumnHeaderName++),j);
                     }
                     else{
                         analyzeOfFieldInCsv.parseField(newRow,rowFromFile[index].trim(),j);
@@ -116,60 +125,93 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
             rowFromFile = m_reader.readNext();
         }
         m_reader.close();
-        extensionDto.setTotalNumberOfRowsInNewFile(extensionDto.getTotalNumberOfRowsInNewFile() - numberOfOriginalsRowInFile);
-    }
-
-    private void  readByLineAndAddRows() throws IOException {
-        m_reader = new CSVReader(new BufferedReader(new FileReader(demo_File_Name)));
-        for(int i = 0 ;i < extensionDto.getTotalNumberOfRowsInNewFile(); i++){
-            if(extensionDto.getHasHeader() == 1  &&  i % numberOfOriginalsRowInFile == 0){
-                m_reader.readNext();
-            }
-            String[] rowFromFile = m_reader.readNext();
-            int index = 0;
-            if(rowFromFile != null){
-                String[] newRow = new String[rowFromFile.length];
-
-                for(String data : rowFromFile){
-
-                    analyzeOfFieldInCsv.parseField(newRow,data.trim(),index++);
-                }
-                m_writer.writeNext(newRow);
-            }
-            else{
-                m_reader.close();
-                m_reader = new CSVReader(new BufferedReader(new FileReader(demo_File_Name)));
-            }
-        }
-        m_reader.close();
-        m_writer.flush();
         m_writer.close();
     }
 
-    private  void createFullDuplicateFile() throws IOException {
-        boolean finish = true;
-        CSVReader reader;
-        CSVWriter writer;
-        for(int i = 0 ; i < extensionDto.getNumberOfFiles(); i++) {
-            reader = new CSVReader(new BufferedReader(new FileReader(demo_File_Name)));
-            writer = createWriter();
-            String[] rowFromFile = null;
-            do {
-                rowFromFile = reader.readNext();
-                if (rowFromFile != null) {
-                    String[] newRow = new String[rowFromFile.length];
-                    int indexOfForRow = 0;
-                    for (String valueFromValue : rowFromFile) {
-                        analyzeOfFieldInCsv.parseField(newRow, valueFromValue, indexOfForRow);
-                        indexOfForRow++;
+
+
+    private void  readByLineAndAddRows() throws IOException {
+        boolean firstTimeToCreateColumns = true;
+        try{
+            m_writer = createWriter();
+            m_reader = new CSVReader((new FileReader(demo_File_Name_First)));
+            for(int i = 0 ;i < extensionDto.getTotalNumberOfRowsInNewFile(); i++){
+                String[] rowFromFile = m_reader.readNext();
+                int index = 0;
+                if(extensionDto.getHasHeader() == 1  &&  i % numberOfOriginalsRowInFile == 0 ){
+                    if(firstTimeToCreateColumns){
+                        if(rowFromFile != null){
+                            String[] newRow = new String[rowFromFile.length];
+                            for(String data : rowFromFile){
+                                analyzeOfFieldInCsv.parseField(newRow,data.trim() + getIntToString(ColumnHeaderName++),index++);
+                            }
+                            m_writer.writeNext(newRow);
+                        }
+                        firstTimeToCreateColumns = false;
                     }
-                    writer.writeNext(newRow);
                 }
-            } while (rowFromFile != null);
-            writer.close();
-            reader.close();
+                else {
+                    if (rowFromFile != null) {
+                        String[] newRow = new String[rowFromFile.length];
+                        for (String data : rowFromFile) {
+                            analyzeOfFieldInCsv.parseField(newRow, data.trim(), index++);
+                        }
+                        m_writer.writeNext(newRow);
+                    } else {
+                        m_reader.close();
+                        m_reader = new CSVReader(new FileReader(demo_File_Name_First));
+                    }
+                }
+            }
+        }finally {
+            m_reader.close();
+            m_writer.close();
+            File file = new File(demo_File_Name_First);
+            if(file.delete()){
+                System.out.println("OK");
+            }
         }
     }
+
+    private  void createFullDuplicateFile() throws IOException {
+        boolean header = true;
+        CSVReader reader = null;
+        CSVWriter writer = null;
+        try {
+            for (int i = 0; i < extensionDto.getNumberOfFiles(); i++,header = true) {
+                reader = new CSVReader(new FileReader(Full_Demo_File));
+                writer = createWriter();
+                String[] rowFromFile = null;
+                do {
+                    rowFromFile = reader.readNext();
+                    if (rowFromFile != null) {
+                        if (extensionDto.getHasHeader() == 1 && header) {
+                            String[] newRow = new String[rowFromFile.length];
+                            int indexOfForRow = 0;
+                            for (String valueFromValue : rowFromFile) {
+                                analyzeOfFieldInCsv.parseField(newRow, valueFromValue.trim() + getIntToString(ColumnHeaderName++), indexOfForRow);
+                                indexOfForRow++;
+                            }
+                            writer.writeNext(newRow);
+                            header = false;
+                        } else {
+                            String[] newRow = new String[rowFromFile.length];
+                            int indexOfForRow = 0;
+                            for (String valueFromValue : rowFromFile) {
+                                analyzeOfFieldInCsv.parseField(newRow, valueFromValue.trim(), indexOfForRow);
+                                indexOfForRow++;
+                            }
+                            writer.writeNext(newRow);
+                        }
+                    }
+                } while (rowFromFile != null);
+
+            }
+           }finally{
+                writer.close();
+                reader.close();
+            }
+        }
 
     private  void addRowsToFile(ObjectList<String []> newCsvFileWithColumns){
         int newSize = newCsvFileWithColumns.size();
@@ -226,7 +268,7 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
         boolean finalResult = true;
         ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(extensionDto.getNumberOfFiles());
         List<Future<Boolean>> resultOfCreation = new ArrayList<>();
-        CSVReader Reader = new CSVReader(new BufferedReader(new FileReader(demo_File_Name)));
+        CSVReader Reader = new CSVReader(new FileReader(Full_Demo_File));
         for(int i =0 ; i < extensionDto.getNumberOfFiles() ; i++){
             Thread.sleep(10);
             Future<Boolean> result = executor.submit(new CreateDuplicateParallelFiles(Reader,createWriter()));
@@ -259,8 +301,16 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
         Timestamp currentTimestamp = new Timestamp(date.getTime());
         checkDirectory(extensionDto.getOutputFolder());
         csvFilename = new File(extensionDto.getOutputFolder() + extensionDto.getFileName() + "_" + currentTimestamp + ".csv");
-        demo_File_Name = csvFilename.getAbsolutePath();
-        return new CSVWriter(new BufferedWriter(new FileWriter(csvFilename)), extensionDto.getSeparator().getSeparatorAsChar(),CSVWriter.NO_QUOTE_CHARACTER);
+        if(isFullDemoFile){
+            Full_Demo_File = csvFilename.getAbsolutePath();
+            isFullDemoFile = false;
+        }
+        if(isDemoFile){
+            demo_File_Name_First = csvFilename.getAbsolutePath();
+            isDemoFile = false;
+            isFullDemoFile = true;
+        }
+        return new CSVWriter(new FileWriter(csvFilename), extensionDto.getSeparator().getSeparatorAsChar(),CSVWriter.NO_QUOTE_CHARACTER);
     }
 
     private void checkDirectory(String directory) {

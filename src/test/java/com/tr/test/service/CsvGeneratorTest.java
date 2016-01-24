@@ -144,9 +144,9 @@ public class CsvGeneratorTest /*extends AbstractTest*/ {
     public void createDuplicateOfFile() throws InterruptedException, ExecutionException, IOException {
         ExtendCsvService extd  = new ExtendCsvServiceServiceImpl();
         CsvExtendableDTO dto  = new CsvExtendableDTO();
-        dto.setNumberOfFiles(4);
-        dto.setHasHeader(0);
-        dto.setTotalNumberOfRowsInNewFile(600000);
+        dto.setNumberOfFiles(5);
+        dto.setHasHeader(1);
+        dto.setTotalNumberOfRowsInNewFile(300000);
         dto.setTotalNumberOfColumnsInNewFile(450);
         dto.setFileName("Roma");
         dto.setOutputFolder("/home/roman/Documents/CsvgeneratorTemp/");
