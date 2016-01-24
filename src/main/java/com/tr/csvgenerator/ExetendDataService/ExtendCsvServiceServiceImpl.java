@@ -143,7 +143,7 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
                         if(rowFromFile != null){
                             String[] newRow = new String[rowFromFile.length];
                             for(String data : rowFromFile){
-                                analyzeOfFieldInCsv.parseField(newRow,data.trim() + getIntToString(ColumnHeaderName++),index++);
+                                analyzeOfFieldInCsv.parseField(newRow,data.trim(),index++);
                             }
                             m_writer.writeNext(newRow);
                         }
@@ -178,23 +178,13 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
         CSVReader reader = null;
         CSVWriter writer = null;
         try {
-            for (int i = 0; i < extensionDto.getNumberOfFiles(); i++,header = true) {
+            for (int i = 0; i < extensionDto.getNumberOfFiles(); i++) {
                 reader = new CSVReader(new FileReader(Full_Demo_File));
                 writer = createWriter();
                 String[] rowFromFile = null;
                 do {
                     rowFromFile = reader.readNext();
                     if (rowFromFile != null) {
-                        if (extensionDto.getHasHeader() == 1 && header) {
-                            String[] newRow = new String[rowFromFile.length];
-                            int indexOfForRow = 0;
-                            for (String valueFromValue : rowFromFile) {
-                                analyzeOfFieldInCsv.parseField(newRow, valueFromValue.trim() + getIntToString(ColumnHeaderName++), indexOfForRow);
-                                indexOfForRow++;
-                            }
-                            writer.writeNext(newRow);
-                            header = false;
-                        } else {
                             String[] newRow = new String[rowFromFile.length];
                             int indexOfForRow = 0;
                             for (String valueFromValue : rowFromFile) {
@@ -202,7 +192,6 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
                                 indexOfForRow++;
                             }
                             writer.writeNext(newRow);
-                        }
                     }
                 } while (rowFromFile != null);
 
