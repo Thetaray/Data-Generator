@@ -33,6 +33,7 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
     private  int numberOfOriginalsRowInFile = 0;
     private  boolean isDemoFile = true;
     private boolean isFullDemoFile = false;
+
     @Override
     public String validateInput(CsvExtendableDTO dto) {
         StringBuffer errorMessage = new StringBuffer();
@@ -90,12 +91,6 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
         return result.toString();
     }
 
-    private String[] headerTransfomation(String []  header ,String [] newRow){
-        for(String HeaderValue : header){
-
-        }
-        return  null;
-    }
 
     private void readByLineAndAddColumns() throws IOException {
         m_reader = new CSVReader(new FileReader(extensionDto.getPathToCsv()));
@@ -289,7 +284,7 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
         Date date = new Date();
         Timestamp currentTimestamp = new Timestamp(date.getTime());
         checkDirectory(extensionDto.getOutputFolder());
-        csvFilename = new File(extensionDto.getOutputFolder() + extensionDto.getFileName() + "_" + currentTimestamp + ".csv");
+        csvFilename = new File(extensionDto.getOutputFolder() + extensionDto.getFileName() + "_" + formatTimeStap(currentTimestamp) + ".csv");
         if(isFullDemoFile){
             Full_Demo_File = csvFilename.getAbsolutePath();
             isFullDemoFile = false;
@@ -306,6 +301,11 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
         File dir = new File(directory);
         if (!dir.exists())
             dir.mkdirs();
+    }
+
+
+    private String formatTimeStap(Timestamp timestamp){
+        return timestamp.toString().replaceAll(":","-").replaceAll(" ","").replaceAll("[\\s.]", "");
     }
 
 }

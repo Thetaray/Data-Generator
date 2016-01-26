@@ -170,10 +170,10 @@ public class CsvGeneratorServiceImpl implements CsvGeneratorService {
         if(csvConfigDTO.getFolderNames() == null){
             csvConfigDTO.setFolderNames(new ArrayList<>());
         }
-        file = new File(csvConfigDTO.getOutputFolder() + currentTimestamp.toString().replaceAll(" ","").replaceAll("[\\s.]", ""));
+        file = new File(csvConfigDTO.getOutputFolder() + formatTimeStap(currentTimestamp));
         if(!file.exists()){
             if (file.mkdir()) {
-                    csvConfigDTO.getFolderNames().add(currentTimestamp.toString().replaceAll(" ","").replaceAll("[\\s.]", ""));
+                    csvConfigDTO.getFolderNames().add(formatTimeStap(currentTimestamp));
                 System.out.println("Directory is created!");
                 } else {
                     System.out.println("Failed to create directory!");
@@ -182,11 +182,18 @@ public class CsvGeneratorServiceImpl implements CsvGeneratorService {
         return  file;
     }
 
+    private String formatTimeStap(Timestamp timestamp){
+       return timestamp.toString().replaceAll(":","-").replaceAll(" ","").replaceAll("[\\s.]", "");
+    }
+    /*private String formatTimeStap(Timestamp timestamp){
+        String timeStap = timestamp.toString().replace()
+    }*/
+
     private CSVWriter createWriter() throws IOException {
         Date date = new Date();
         Timestamp currentTimestamp = new Timestamp(date.getTime());
         checkDirectory(csvConfigDTO.getOutputFolder());
-        csvFilename = new File(csvConfigDTO.getOutputFolder() + csvConfigDTO.getOutputfileName() + "_" + currentTimestamp + ".csv");
+        csvFilename = new File(csvConfigDTO.getOutputFolder() + csvConfigDTO.getOutputfileName() + "_" + formatTimeStap(currentTimestamp) + ".csv");
         return new CSVWriter(new FileWriter(csvFilename), csvConfigDTO.getSeparator().getSeparatorAsChar());
     }
 

@@ -13,6 +13,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -154,5 +155,15 @@ public class CsvGeneratorTest /*extends AbstractTest*/ {
         dto.setPathToCsv("/home/roman/Documents/test Data Csv/raw_data_for_demo_20052015.csv");
         extd.validateInput(dto);
         extd.extendToCsvFile(dto);
+    }
+
+    @Ignore
+    @Test
+    public void TimeStempTest(){
+        Date date = new Date();
+        Timestamp timestamp = new Timestamp(date.getTime());
+        String formatString = timestamp.toString().replaceAll(":","-").replaceAll(" ","").replaceAll("[\\s.]", "");
+        System.out.println(formatString);
+
     }
 }
