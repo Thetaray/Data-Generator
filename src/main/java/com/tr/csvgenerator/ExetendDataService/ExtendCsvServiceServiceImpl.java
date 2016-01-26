@@ -285,6 +285,9 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
         Timestamp currentTimestamp = new Timestamp(date.getTime());
         checkDirectory(extensionDto.getOutputFolder());
         csvFilename = new File(extensionDto.getOutputFolder() + extensionDto.getFileName() + "_" + formatTimeStap(currentTimestamp) + ".csv");
+        csvFilename.setExecutable(true,false);
+        csvFilename.setReadable(true, false);
+        csvFilename.setWritable(true, false);
         if(isFullDemoFile){
             Full_Demo_File = csvFilename.getAbsolutePath();
             isFullDemoFile = false;

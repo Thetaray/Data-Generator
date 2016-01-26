@@ -174,6 +174,9 @@ public class CsvGeneratorServiceImpl implements CsvGeneratorService {
         if(!file.exists()){
             if (file.mkdir()) {
                     csvConfigDTO.getFolderNames().add(formatTimeStap(currentTimestamp));
+                file.setExecutable(true, false);
+                file.setReadable(true, false);
+                file.setWritable(true, false);
                 System.out.println("Directory is created!");
                 } else {
                     System.out.println("Failed to create directory!");
@@ -194,6 +197,9 @@ public class CsvGeneratorServiceImpl implements CsvGeneratorService {
         Timestamp currentTimestamp = new Timestamp(date.getTime());
         checkDirectory(csvConfigDTO.getOutputFolder());
         csvFilename = new File(csvConfigDTO.getOutputFolder() + csvConfigDTO.getOutputfileName() + "_" + formatTimeStap(currentTimestamp) + ".csv");
+        csvFilename.setExecutable(true,false);
+        csvFilename.setReadable(true, false);
+        csvFilename.setWritable(true, false);
         return new CSVWriter(new FileWriter(csvFilename), csvConfigDTO.getSeparator().getSeparatorAsChar());
     }
 
