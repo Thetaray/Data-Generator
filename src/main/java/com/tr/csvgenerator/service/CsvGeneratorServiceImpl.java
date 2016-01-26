@@ -119,6 +119,9 @@ public class CsvGeneratorServiceImpl implements CsvGeneratorService {
         int numberFilesToCreate = csvConfig.getNumberOfFilesToGen();
         while (numberFilesToCreate != 0) {
             this.csvWriter = createWriter();
+            csvFilename.setExecutable(true,false);
+            csvFilename.setReadable(true, false);
+            csvFilename.setWritable(true, false);
             long numberOfBytes = 0;
             Random r = new Random();
             String[] stringsColumn;
