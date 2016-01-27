@@ -37,7 +37,7 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
     @Override
     public String validateInput(CsvExtendableDTO dto) {
         StringBuffer errorMessage = new StringBuffer();
-        if (dto.getTotalNumberOfRowsInNewFile() < 2000 || dto.getTotalNumberOfRowsInNewFile() > 2000000) {
+        if (dto.getTotalNumberOfRowsInNewFile() < 1  || dto.getTotalNumberOfRowsInNewFile() > 2000000) {
             errorMessage.append("Not a correct number of rows to add\n");
         }
 
