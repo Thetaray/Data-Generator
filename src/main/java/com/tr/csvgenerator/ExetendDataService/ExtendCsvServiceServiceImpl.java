@@ -4,6 +4,7 @@ import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
 import com.tr.csvgenerator.dto.CsvExtendableDTO;
 import it.unimi.dsi.fastutil.objects.*;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -20,6 +21,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * Created by roman on 18/01/16.
  */
 @Service
+@Scope("prototype")
 public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
 
     private int ColumnHeaderName = 1;
