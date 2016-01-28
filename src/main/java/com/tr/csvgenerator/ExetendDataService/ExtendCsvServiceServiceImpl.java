@@ -23,7 +23,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Service
 @Scope("prototype")
 public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
-
     private int ColumnHeaderName = 1;
     private CsvExtendableDTO extensionDto;
     private File csvFilename;
@@ -63,6 +62,8 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
 
     @Override
     public boolean extendToCsvFile(CsvExtendableDTO dto) throws IOException, ExecutionException, InterruptedException {
+        isDemoFile = true;
+        isFullDemoFile = false;
         boolean finalResult = true;
         int numberOfColumnsToAdd = 1;
         int numberOfRowsToAdd   = 1;
