@@ -7,6 +7,8 @@ import com.tr.csvgenerator.model.Separator;
  */
 public class CsvExtendableDTO {
 
+    private int TimeStampFeature = 0 ;
+
     private int hasHeader = 1;
 
     private int numberOfFiles = 1;
@@ -27,6 +29,14 @@ public class CsvExtendableDTO {
 
     public void setNumberOfFiles(int numberOfFiles) {
         this.numberOfFiles = numberOfFiles;
+    }
+
+    public int getTimeStampFeature() {
+        return TimeStampFeature;
+    }
+
+    public void setTimeStampFeature(int timeStampFeature) {
+        TimeStampFeature = timeStampFeature;
     }
 
 
