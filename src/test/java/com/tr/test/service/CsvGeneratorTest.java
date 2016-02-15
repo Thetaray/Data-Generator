@@ -1,6 +1,7 @@
 package com.tr.test.service;
 
 import au.com.bytecode.opencsv.CSVWriter;
+import com.tr.csvgenerator.CsvJoin.csvJoinerService;
 import com.tr.csvgenerator.ExetendDataService.ExtendCsvService;
 import com.tr.csvgenerator.ExetendDataService.ExtendCsvServiceServiceImpl;
 import com.tr.csvgenerator.dto.CsvConfigDTO;
@@ -119,7 +120,7 @@ public class CsvGeneratorTest /*extends AbstractTest*/ {
     public void createCsv() throws Exception {
         CsvGeneratorService generatorService = new CsvGeneratorServiceImpl();
         CsvConfigDTO configDTO = new CsvConfigDTO();
-        configDTO.setNumberOfFilesToGen(15);
+        configDTO.setNumberOfFilesToGen(2);
         configDTO.setRandomBatch(5000);
         configDTO.setFileSizeInMB(15);
         generatorService.validateCsvConfig(configDTO);
@@ -148,8 +149,9 @@ public class CsvGeneratorTest /*extends AbstractTest*/ {
         dto.setNumberOfFiles(1);
         dto.setHasHeader(1);
         dto.setTotalNumberOfRowsInNewFile(20000);
-        dto.setTotalNumberOfColumnsInNewFile(450);
+        dto.setTotalNumberOfColumnsInNewFile(50);
         dto.setFileName("Roma");
+        dto.setTimeStampFeature(1);
         dto.setOutputFolder("/home/roman/Documents/CsvgeneratorTemp/");
         //dto.setPathToCsv("/home/roman/Documents/Data_for_Tests/OffLine_BLDG_66_HVAC.csv");
         dto.setPathToCsv("/home/roman/Documents/test Data Csv/raw_data_for_demo_20052015.csv");
@@ -165,5 +167,12 @@ public class CsvGeneratorTest /*extends AbstractTest*/ {
         String formatString = timestamp.toString().replaceAll(":","-").replaceAll(" ","").replaceAll("[\\s.]", "");
         System.out.println(formatString);
 
+    }
+
+    @Ignore
+    @Test
+    public  void joinCsvFiles() throws IOException {
+        csvJoinerService join = new csvJoinerService();
+        join.createCsv();
     }
 }

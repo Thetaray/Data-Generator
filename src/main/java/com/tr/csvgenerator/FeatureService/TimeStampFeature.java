@@ -15,7 +15,7 @@ import java.util.Random;
 /**
  * Created by roman on 08/02/16.
  */
-@Service
+@Service("TimeStamp")
 @Scope("singleton")
 public class TimeStampFeature implements  FeatureService {
 
@@ -35,7 +35,7 @@ public class TimeStampFeature implements  FeatureService {
 
     @Override
     public String getValueForIndex() {
-        int randomMilliseconds = random.nextInt(999);
+        int randomMilliseconds = random.nextInt(10);
         calendar.setTimeInMillis(date.getTime() + randomMilliseconds);
         date.setTime(calendar.getTime().getTime());
         String formattedDate = sdf.format(date);

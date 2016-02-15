@@ -5,6 +5,7 @@ import au.com.bytecode.opencsv.CSVWriter;
 import com.tr.csvgenerator.FeatureService.FeatureService;
 import com.tr.csvgenerator.dto.CsvExtendableDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,7 @@ import java.util.concurrent.ExecutionException;
 public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
 
     @Autowired
+    @Qualifier("TimeStamp")
     protected FeatureService featureService;
 
     private int ColumnHeaderName = 1;
