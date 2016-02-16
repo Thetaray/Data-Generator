@@ -40,7 +40,7 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
     @Override
     public String validateInput(CsvExtendableDTO dto) {
         StringBuffer errorMessage = new StringBuffer();
-        if (dto.getTotalNumberOfRowsInNewFile() < 1  || dto.getTotalNumberOfRowsInNewFile() > 2000000) {
+        if (dto.getTotalNumberOfRowsInNewFile() < 1  || dto.getTotalNumberOfRowsInNewFile() > 20000000) {
             errorMessage.append("Not a correct number of rows to add\n");
         }
 
@@ -48,10 +48,10 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
             errorMessage.append("Wrong dateStampFormat value");
         }
 
-        if (dto.getTotalNumberOfColumnsInNewFile() < 15 || dto.getTotalNumberOfColumnsInNewFile() > 5000) {
+        if (dto.getTotalNumberOfColumnsInNewFile() < 1 || dto.getTotalNumberOfColumnsInNewFile() > 5000) {
             errorMessage.append("Wrong number of columns");
         }
-        if (dto.getTotalNumberOfColumnsInNewFile() > dto.getTotalNumberOfRowsInNewFile() / 10) {
+        if (dto.getTotalNumberOfColumnsInNewFile() > dto.getTotalNumberOfRowsInNewFile()) {
             errorMessage.append("Wrong number of rows per columns");
         }
         if(dto.getPathToCsv().isEmpty()){
@@ -193,6 +193,7 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
                 String[] rowFromFile = m_reader.readNext();
                 int index = 0;
                 if (extensionDto.getHasHeader() == 1 && i % numberOfOriginalsRowInFile == 0) {
+                    extensionDto.setTotalNumberOfRowsInNewFile(extensionDto.getTotalNumberOfRowsInNewFile() + 1);
                     if (firstTimeToCreateColumns) {
                         if (rowFromFile != null) {
                             String[] newRow = new String[rowFromFile.length];
