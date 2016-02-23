@@ -189,7 +189,7 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
         try {
             m_writer = createWriter();
             m_reader = new CSVReader((new FileReader(demo_File_Name_First)));
-            for (int i = 0; i < extensionDto.getTotalNumberOfRowsInNewFile(); i++) {
+            for (int i = 0; i <= extensionDto.getTotalNumberOfRowsInNewFile(); i++) {
                 String[] rowFromFile = m_reader.readNext();
                 int index = 0;
                 if (extensionDto.getHasHeader() == 1 && i % numberOfOriginalsRowInFile == 0) {
@@ -296,32 +296,32 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
         String[] rowFromFile = m_reader.readNext();
         int newNumberOfColumnsWithTimeStampFeautre = extensionDto.getTotalNumberOfColumnsInNewFile() + 1;
         while(rowFromFile != null){
-            numberOfOriginalColumnsInFile = rowFromFile.length;
-            String[] newRow   = new String[extensionDto.getTotalNumberOfColumnsInNewFile() + 1];
+            numberOfOriginalColumnsInFile = rowFromFile.length; //Geting number of columns from sample data
+            String[] newRow   = new String[extensionDto.getTotalNumberOfColumnsInNewFile() + 1]; //Adding rows for new file with time stamp feature
             if(firstRow == true){
-                newRow[0] = featureService.getFeatureNameHeader();
+                newRow[0] = featureService.getFeatureNameHeader();//Add feature name to header
             }
             else{
-                newRow[0] = featureService.getValueForIndex();
+                newRow[0] = featureService.getValueForIndex();//Add value from feature
             }
             for(int i = 0, j=1 ;i < extensionDto.getTotalNumberOfColumnsInNewFile() ; i++,j++){
                 if(i < numberOfOriginalColumnsInFile){
-                    newRow[j] = rowFromFile[i].trim();
+                    newRow[j] = rowFromFile[i].trim();//Add originals values to new csv file
                 }else {
-                    int index = i % numberOfOriginalColumnsInFile;
+                    int index = i % numberOfOriginalColumnsInFile;//Finished columns in original file
                     //Adding new values to header
                     if(firstRow && extensionDto.getHasHeader() == 1){
-                        analyzeOfFieldInCsv.parseField(newRow,rowFromFile[index].trim() + getIntToString(ColumnHeaderName++),j);
+                        analyzeOfFieldInCsv.parseField(newRow,rowFromFile[index].trim() + getIntToString(ColumnHeaderName++),j);//feature name parsing
                     }
                     else{
-                        analyzeOfFieldInCsv.parseField(newRow,rowFromFile[index].trim(),j);
+                        analyzeOfFieldInCsv.parseField(newRow,rowFromFile[index].trim(),j);//value from csv file parsing
                     }
                 }
 
             }
             m_writer.writeNext(newRow);
             firstRow = false;
-            numberOfOriginalsRowInFile++;
+            numberOfOriginalsRowInFile++;//counting original number of rows in sample file
             rowFromFile = m_reader.readNext();
         }
         m_reader.close();

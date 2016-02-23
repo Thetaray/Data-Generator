@@ -35,7 +35,7 @@ public class TimeStampFeature implements  FeatureService {
 
     @Override
     public String getValueForIndex() {
-        int randomMilliseconds = random.nextInt(10);
+        int randomMilliseconds = random.nextInt(300);
         calendar.setTimeInMillis(date.getTime() + randomMilliseconds);
         date.setTime(calendar.getTime().getTime());
         String formattedDate = sdf.format(date);
