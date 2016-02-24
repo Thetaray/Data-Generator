@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import scala.Char;
 
 import java.io.*;
 import java.sql.Timestamp;
@@ -21,10 +22,14 @@ import java.util.concurrent.ExecutionException;
 @Scope("prototype")
 public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
 
+
+    private  char charSeperator = '*';
+
     @Autowired
     @Qualifier("TimeStamp")
     protected FeatureService featureService;
-
+    private Character separatorToRead = null;
+    private Character separatorToOut = null;
     private int ColumnHeaderName = 1;
     private CsvExtendableDTO extensionDto;
     private File csvFilename;
@@ -42,6 +47,13 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
         StringBuffer errorMessage = new StringBuffer();
         if (dto.getTotalNumberOfRowsInNewFile() < 1  || dto.getTotalNumberOfRowsInNewFile() > 20000000) {
             errorMessage.append("Not a correct number of rows to add\n");
+        }
+
+        if(dto.getSeperatorToRead() == null || dto.getSeperatorToRead().length() > 1){
+            errorMessage.append("Wrong  input for separator read \n");
+        }
+        if(dto.getSeperatorToWrite() == null || dto.getSeperatorToWrite().length() > 1){
+            errorMessage.append("Wrong  input for separator to write \n");
         }
 
         if(dto.getTimeStampFeature() < 0 || dto.getTimeStampFeature() > 1){
@@ -74,6 +86,12 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
         int numberOfColumnsToAdd = 1;
         int numberOfRowsToAdd   = 1;
         this.extensionDto = dto;
+        if(!extensionDto.getSeperatorToRead().isEmpty() && !extensionDto.getSeperatorToRead().contains(" ")){
+            separatorToRead = extensionDto.getSeperatorToRead().charAt(0);
+        }
+        if(!extensionDto.getSeperatorToWrite().isEmpty() && !extensionDto.getSeperatorToWrite().contains(" ")) {
+            separatorToOut  =  extensionDto.getSeperatorToWrite().charAt(0);
+        }
         this.m_writer = createWriter();
         if(extensionDto.getTimeStampFeature() == 1){
             AddColumnsWithTimeStampFeautre();
@@ -111,7 +129,7 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
     }
 
     private void readByLineAndAddColumns() throws IOException {
-        m_reader = new CSVReader(new FileReader(extensionDto.getPathToCsv()));
+        m_reader = createReader(extensionDto.getPathToCsv());
         boolean firstRow = true;
         String[] rowFromFile = m_reader.readNext();
         int numberOfOriginalColumns = 0;
@@ -145,7 +163,7 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
         boolean firstTimeToCreateColumns = true;
         try{
             m_writer = createWriter();
-            m_reader = new CSVReader((new FileReader(demo_File_Name_First)));
+            m_reader = createReader(demo_File_Name_First);
             for(int i = 0 ;i < extensionDto.getTotalNumberOfRowsInNewFile(); i++){
                 String[] rowFromFile = m_reader.readNext();
                 int index = 0;
@@ -160,6 +178,9 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
                         }
                         firstTimeToCreateColumns = false;
                     }
+                    else {
+                        extensionDto.setTotalNumberOfRowsInNewFile(extensionDto.getTotalNumberOfRowsInNewFile()+1);
+                    }
                 }
                 else {
                     if (rowFromFile != null) {
@@ -170,7 +191,7 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
                         m_writer.writeNext(newRow);
                     } else {
                         m_reader.close();
-                        m_reader = new CSVReader(new FileReader(demo_File_Name_First));
+                        m_reader = createReader(demo_File_Name_First);
                     }
                 }
             }
@@ -188,7 +209,7 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
         boolean firstTimeToCreateColumns = true;
         try {
             m_writer = createWriter();
-            m_reader = new CSVReader((new FileReader(demo_File_Name_First)));
+            m_reader = createReader(demo_File_Name_First);
             for (int i = 0; i <= extensionDto.getTotalNumberOfRowsInNewFile(); i++) {
                 String[] rowFromFile = m_reader.readNext();
                 int index = 0;
@@ -214,7 +235,7 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
                         m_writer.writeNext(newRow);
                     } else {
                         m_reader.close();
-                        m_reader = new CSVReader(new FileReader(demo_File_Name_First));
+                        m_reader = createReader(demo_File_Name_First);
                     }
                 }
             }
@@ -235,7 +256,7 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
         CSVWriter writer = null;
         try {
             for (int i = 0; i < extensionDto.getNumberOfFiles(); i++) {
-                reader = new CSVReader(new FileReader(Full_Demo_File));
+                reader = createReader(Full_Demo_File);
                 writer = createWriter();
                 String[] rowFromFile = null;
                 do {
@@ -260,6 +281,7 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
 
     private CSVWriter createWriter() throws IOException {
         Date date = new Date();
+        CSVWriter writer;
         Timestamp currentTimestamp = new Timestamp(date.getTime());
         checkDirectory(extensionDto.getOutputFolder());
         csvFilename = new File(extensionDto.getOutputFolder() + extensionDto.getFileName() + "_" + formatTimeStap(currentTimestamp) + ".csv");
@@ -275,7 +297,24 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
             isDemoFile = false;
             isFullDemoFile = true;
         }
-        return new CSVWriter(new FileWriter(csvFilename), extensionDto.getSeparator().getSeparatorAsChar(),CSVWriter.NO_QUOTE_CHARACTER);
+        if(separatorToOut != null){
+              writer = new CSVWriter(new FileWriter(csvFilename), separatorToOut,CSVWriter.NO_QUOTE_CHARACTER);
+        }
+        else{
+               writer = new CSVWriter(new FileWriter(csvFilename),extensionDto.getSeparator().getSeparatorAsChar(),CSVWriter.NO_QUOTE_CHARACTER);
+        }
+        return writer;
+    }
+
+    private CSVReader createReader(String pathToFile) throws FileNotFoundException {
+        CSVReader reader;
+        if(separatorToRead != null){
+            reader = new CSVReader(new FileReader(pathToFile), separatorToRead);
+        }
+        else{
+            reader = new CSVReader(new FileReader(pathToFile));
+        }
+        return  reader;
     }
 
     private void checkDirectory(String directory) {
@@ -291,7 +330,7 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
 
     private void AddColumnsWithTimeStampFeautre() throws IOException {
         int numberOfOriginalColumnsInFile  = 0;
-        m_reader = new CSVReader(new FileReader(extensionDto.getPathToCsv()));
+        m_reader = createReader(extensionDto.getPathToCsv());
         boolean firstRow = true;
         String[] rowFromFile = m_reader.readNext();
         int newNumberOfColumnsWithTimeStampFeautre = extensionDto.getTotalNumberOfColumnsInNewFile() + 1;

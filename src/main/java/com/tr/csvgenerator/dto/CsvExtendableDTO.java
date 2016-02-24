@@ -1,11 +1,18 @@
 package com.tr.csvgenerator.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tr.csvgenerator.model.Separator;
+import jdk.nashorn.internal.ir.annotations.Ignore;
+import scala.Char;
 
 /**
  * Created by roman on 18/01/16.
  */
 public class CsvExtendableDTO {
+
+    private  String  seperatorToWrite = null;
+
+    private String seperatorToRead = null;
 
     private int TimeStampFeature = 0 ;
 
@@ -31,6 +38,23 @@ public class CsvExtendableDTO {
         this.numberOfFiles = numberOfFiles;
     }
 
+    public String getSeperatorToWrite() {
+        return seperatorToWrite;
+    }
+
+    public void setSeperatorToWrite(String seperatorToWrite) {
+        this.seperatorToWrite = seperatorToWrite;
+    }
+
+    public String getSeperatorToRead() {
+        return seperatorToRead;
+    }
+
+    public void setSeperatorToRead(String seperatorToRead) {
+        this.seperatorToRead = seperatorToRead;
+    }
+
+
     public int getTimeStampFeature() {
         return TimeStampFeature;
     }
@@ -44,13 +68,11 @@ public class CsvExtendableDTO {
         return numberOfFiles;
     }
 
+    @JsonIgnore
     public Separator getSeparator() {
         return separator;
     }
 
-    public void setSeparator(Separator separator) {
-        this.separator = separator;
-    }
 
     public int getHasHeader() {
         return hasHeader;
