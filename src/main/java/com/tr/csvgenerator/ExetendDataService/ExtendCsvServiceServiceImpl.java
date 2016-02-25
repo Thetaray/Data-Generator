@@ -333,6 +333,9 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
     private void AddColumnsWithTimeStampFeautre() throws IOException {
         int numberOfOriginalColumnsInFile  = 0;
         m_reader = createReader(extensionDto.getPathToCsv());
+        if(extensionDto.getHasHeader() == 1){
+            numberOfOriginalsRowInFile --;
+        }
         boolean firstRow = true;
         String[] rowFromFile = m_reader.readNext();
         int newNumberOfColumnsWithTimeStampFeautre = extensionDto.getTotalNumberOfColumnsInNewFile() + 1;
@@ -362,10 +365,8 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
             }
             m_writer.writeNext(newRow);
             firstRow = false;
-            if(!firstRow && !(extensionDto.getHasHeader() == 1)){
-                numberOfOriginalsRowInFile++;
-            }
             //counting original number of rows in sample file
+            numberOfOriginalsRowInFile++;
             rowFromFile = m_reader.readNext();
         }
         m_reader.close();
