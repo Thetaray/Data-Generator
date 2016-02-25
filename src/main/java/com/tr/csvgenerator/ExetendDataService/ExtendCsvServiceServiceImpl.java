@@ -214,7 +214,6 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
                 String[] rowFromFile = m_reader.readNext();
                 int index = 0;
                 if (extensionDto.getHasHeader() == 1 && i % numberOfOriginalsRowInFile == 0) {
-                    extensionDto.setTotalNumberOfRowsInNewFile(extensionDto.getTotalNumberOfRowsInNewFile() + 1);
                     if (firstTimeToCreateColumns) {
                         if (rowFromFile != null) {
                             String[] newRow = new String[rowFromFile.length];
@@ -224,6 +223,9 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
                             m_writer.writeNext(newRow);
                         }
                         firstTimeToCreateColumns = false;
+                    }
+                    else{
+                        extensionDto.setTotalNumberOfRowsInNewFile(extensionDto.getTotalNumberOfRowsInNewFile() + 1);
                     }
                 } else {
                     if (rowFromFile != null) {
@@ -360,7 +362,10 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
             }
             m_writer.writeNext(newRow);
             firstRow = false;
-            numberOfOriginalsRowInFile++;//counting original number of rows in sample file
+            if(!firstRow && !(extensionDto.getHasHeader() == 1)){
+                numberOfOriginalsRowInFile++;
+            }
+            //counting original number of rows in sample file
             rowFromFile = m_reader.readNext();
         }
         m_reader.close();

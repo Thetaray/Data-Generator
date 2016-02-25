@@ -20,7 +20,7 @@ import java.util.Random;
 public class TimeStampFeature implements  FeatureService {
 
     private Calendar calendar = new GregorianCalendar();
-    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy h:mm:ss.SSS");
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy H:mm:ss.SSS");
     private Date date = null;
     private Random random = new Random();
     public  TimeStampFeature(){
