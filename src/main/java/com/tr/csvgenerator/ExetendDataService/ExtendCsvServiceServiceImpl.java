@@ -66,9 +66,9 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
         if (dto.getTotalNumberOfColumnsInNewFile() < 1 || dto.getTotalNumberOfColumnsInNewFile() > 5000) {
             errorMessage.append("Wrong number of columns");
         }
-        if (dto.getTotalNumberOfColumnsInNewFile() > dto.getTotalNumberOfRowsInNewFile()) {
+       /* if (dto.getTotalNumberOfColumnsInNewFile() > dto.getTotalNumberOfRowsInNewFile()) {
             errorMessage.append("Wrong number of rows per columns");
-        }
+        }*/
         if(dto.getPathToCsv().isEmpty()){
             errorMessage.append("No path To Csv file as example");
         }
@@ -94,6 +94,7 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
     public boolean extendToCsvFile(CsvExtendableDTO dto) throws IOException, ExecutionException, InterruptedException {
         isDemoFile = true;
         isFullDemoFile = false;
+        numberOfOriginalsRowInFile = 0;
         boolean finalResult = true;
         int numberOfColumnsToAdd = 1;
         int numberOfRowsToAdd   = 1;
@@ -235,6 +236,11 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
             int finalNumberOfRowsToWriteBecauseHeader = extensionDto.getTotalNumberOfRowsInNewFile();
             for (int i = 0; i <= finalNumberOfRowsToWriteBecauseHeader ; i++) {
                 String[] rowFromFile = m_reader.readNext();
+                if(rowFromFile == null){
+                        m_reader.close();
+                        m_reader = createReader(demo_File_Name_First);
+                        rowFromFile = m_reader.readNext();
+                }
                 int index = 0;
                 if (extensionDto.getHasHeader() == 1 && i % numberOfOriginalsRowInFile == 0) {
                     if (firstTimeToCreateColumns) {
@@ -262,26 +268,23 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
                             analyzeOfFieldInCsv.parseField(newRow, rowFromFile[indexToStratBecauseOfFeature], indexToStratBecauseOfFeature);
                         }
                         dataFromFile.push(newRow);
-                    }else {
-                        m_reader.close();
-                        m_reader = createReader(demo_File_Name_First);
+                    }
+                    }
+                if(dataFromFile.size() > 20000){
+                    if(submit == null){
+                        WriteDataToFile writeDataToFile = new WriteDataToFile(m_writer,dataFromFile);
+                        submit = executor.submit(writeDataToFile);
+                        dataFromFile.clear();
+                    }else{
+                        if(submit.isDone()){
+                            WriteDataToFile writeDataToFile = new WriteDataToFile(m_writer,dataFromFile);
+                            submit = executor.submit(writeDataToFile);
+                            dataFromFile.clear();
+                        }
                     }
                 }
-               if(dataFromFile.size() > 20000){
-                   if(submit == null){
-                       WriteDataToFile writeDataToFile = new WriteDataToFile(m_writer,dataFromFile);
-                       submit = executor.submit(writeDataToFile);
-                       dataFromFile.clear();
-                   }else{
-                       if(submit.isDone()){
-                             WriteDataToFile writeDataToFile = new WriteDataToFile(m_writer,dataFromFile);
-                               submit = executor.submit(writeDataToFile);
-                               dataFromFile.clear();
-                       }
-                   }
+                }
 
-               }
-            }
         }catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
