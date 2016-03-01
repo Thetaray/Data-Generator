@@ -3,6 +3,7 @@ package com.tr.csvgenerator.FeatureService;
 import org.joda.time.DateTime;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.xml.crypto.Data;
@@ -15,8 +16,8 @@ import java.util.Random;
 /**
  * Created by roman on 08/02/16.
  */
-@Service("TimeStamp")
 @Scope("singleton")
+@Component
 public class TimeStampFeature implements  FeatureService {
 
     private Calendar calendar = new GregorianCalendar();
@@ -41,5 +42,5 @@ public class TimeStampFeature implements  FeatureService {
         String formattedDate = sdf.format(date);
         return  formattedDate;
     }
-    //TEst
+
 }

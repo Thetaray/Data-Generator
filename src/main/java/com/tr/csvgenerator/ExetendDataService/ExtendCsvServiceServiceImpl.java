@@ -2,11 +2,13 @@ package com.tr.csvgenerator.ExetendDataService;
 
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
+import com.tr.csvgenerator.FeatureService.FeatureConfiguration;
 import com.tr.csvgenerator.FeatureService.FeatureService;
 import com.tr.csvgenerator.dto.CsvExtendableDTO;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
@@ -28,9 +30,11 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
 
     private  char charSeperator = '*';
 
+
     @Autowired
-    @Qualifier("TimeStamp")
-    protected FeatureService featureService;
+    FeatureConfiguration featureConfiguration;
+
+    protected FeatureService featureService = null;
     private Character separatorToRead = null;
     private Character separatorToOut = null;
     private int ColumnHeaderName = 1;
@@ -63,12 +67,20 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
             errorMessage.append("Wrong dateStampFormat value");
         }
 
+        if(dto.getIdFeature() < 0 || dto.getIdFeature() > 1){
+            errorMessage.append("Wrong dateStampFormat value");
+        }
+
+        if(dto.getIdFeature() == 1 && dto.getTimeStampFeature() == 1 ){
+            errorMessage.append("Please choose only one feature");
+        }
+
         if (dto.getTotalNumberOfColumnsInNewFile() < 1 || dto.getTotalNumberOfColumnsInNewFile() > 5000) {
             errorMessage.append("Wrong number of columns");
         }
-       /* if (dto.getTotalNumberOfColumnsInNewFile() > dto.getTotalNumberOfRowsInNewFile()) {
+        if (dto.getTotalNumberOfColumnsInNewFile() > dto.getTotalNumberOfRowsInNewFile()) {
             errorMessage.append("Wrong number of rows per columns");
-        }*/
+        }
         if(dto.getPathToCsv().isEmpty()){
             errorMessage.append("No path To Csv file as example");
         }
@@ -90,44 +102,34 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
         }
     }
 
+    private void resetFeature(){
+        if(extensionDto.getIdFeature() == 1 || extensionDto.getTimeStampFeature() == 1){
+            featureService = featureConfiguration.getFeature(extensionDto);
+        }
+    }
+
     @Override
     public boolean extendToCsvFile(CsvExtendableDTO dto) throws IOException, ExecutionException, InterruptedException {
+        this.extensionDto = dto;
+        featureService = null;
+        resetFeature();
         isDemoFile = true;
         isFullDemoFile = false;
         numberOfOriginalsRowInFile = 0;
         boolean finalResult = true;
         int numberOfColumnsToAdd = 1;
         int numberOfRowsToAdd   = 1;
-        this.extensionDto = dto;
+
         setSeparatorAfterValidationOfSeparator();
         this.m_writer = createWriter();
         executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(2);
         readByLineInFromOriginalFileAndCreateDemoFileWithNewNumberOfColumns();
+        resetFeature();
         createFullFileByDuplicateDemoFileAndAddingRows();
         extensionDto.oneFileCreated();
         if(extensionDto.getNumberOfFiles() >= 1){
             createFullDuplicateFile();
         }
-        /*if(extensionDto.getTimeStampFeature() == 1){
-            readByLineInFromOriginalFileAndCreateDemoFileWithNewNumberOfColumns();
-            if(numberOfRowsToAdd > 0 ){
-                addRowsWithTimeStampFeature();
-                extensionDto.oneFileCreated();
-                if(extensionDto.getNumberOfFiles() >= 1){
-                    createFullDuplicateFile();
-                }
-            }
-        }
-        else {
-            readByLineAndAddColumns();
-            if(numberOfRowsToAdd > 0 ){
-                readByLineAndAddRows();
-                extensionDto.oneFileCreated();
-                if(extensionDto.getNumberOfFiles() >= 1){
-                    createFullDuplicateFile();
-                }
-               }
-        }*/
         return finalResult;
     }
 
@@ -171,13 +173,13 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
                 String [] newRow = new String[totalNumberOfColumnsInNewFile];
                 if(firstRow){
                     numberOfOriginalColumnsInFile = rowFromFile.length;
-                    if(extensionDto.getTimeStampFeature() == 1){
+                    if(featureService != null){
                         indexToStartBecauseOfFeature++;
                         newRow[0] = featureService.getFeatureNameHeader();
                     }
                 }
                 else {
-                    if(extensionDto.getTimeStampFeature() == 1){
+                    if(featureService != null){
                         indexToStartBecauseOfFeature++;
                         newRow[0] = featureService.getValueForIndex();
                     }
@@ -258,7 +260,7 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
                 }else{
                     if(rowFromFile != null){
                         String[] newRow = new String[rowFromFile.length];
-                            if(extensionDto.getTimeStampFeature() == 1){
+                            if(featureService != null){
                                 newRow[0] = featureService.getValueForIndex();
                                 indexToStratBecauseOfFeature  = 1;
                             }else{
@@ -302,13 +304,14 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
         }
     }
 
-
     private  void createFullDuplicateFile() throws IOException {
         boolean header = true;
         CSVReader reader = null;
         CSVWriter writer = null;
         try {
             for (int i = 0; i < extensionDto.getNumberOfFiles(); i++) {
+                boolean newRowToAddFeature = true;
+                resetFeature();
                 reader = createReader(Full_Demo_File);
                 writer = createWriter();
                 String[] rowFromFile = null;
@@ -318,7 +321,16 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
                             String[] newRow = new String[rowFromFile.length];
                             int indexOfForRow = 0;
                             for (String valueFromValue : rowFromFile) {
-                                analyzeOfFieldInCsv.parseField(newRow, valueFromValue.trim(), indexOfForRow);
+                                if(featureService != null && newRowToAddFeature){
+                                    if(indexOfForRow == 0){
+                                        newRow[0] = featureService.getFeatureNameHeader();
+                                    }else{
+                                        newRow[0] = featureService.getValueForIndex();
+                                    }
+                                    newRowToAddFeature = false;
+                                }else{
+                                    analyzeOfFieldInCsv.parseField(newRow, valueFromValue.trim(), indexOfForRow);
+                                }
                                 indexOfForRow++;
                             }
                             writer.writeNext(newRow);
@@ -375,7 +387,6 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
         if (!dir.exists())
             dir.mkdirs();
     }
-
 
     private String formatTimeStap(Timestamp timestamp){
         return timestamp.toString().replaceAll(":","-").replaceAll(" ","").replaceAll("[\\s.]", "");

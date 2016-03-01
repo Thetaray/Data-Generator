@@ -65,7 +65,7 @@ public class CsvController {
 
     @RequestMapping(value = "/duplicate",method = RequestMethod.POST,produces = "application/json")
     public  TrApiResponse duplicateCsv(
-            @ApiParam(value = "json example also has the default values" , required = true)@Validated @RequestBody CsvExtendableDTO csvExtendableDTO) throws IOException, ExecutionException, InterruptedException {
+            @ApiParam(value = "json example also has the default values" , required = true)@Validated @RequestBody CsvExtendableDTO csvExtendableDTO) throws Exception {
         String validationMessage = extendCsvService.validateInput(csvExtendableDTO);
         TrApiResponse trApiResponse = new TrApiResponse();
         if(validationMessage.equalsIgnoreCase("No Errors")){

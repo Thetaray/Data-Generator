@@ -10,6 +10,8 @@ import scala.Char;
  */
 public class CsvExtendableDTO {
 
+    private int IdFeature = 0;
+
     private  String  seperatorToWrite = null;
 
     private String seperatorToRead = null;
@@ -52,6 +54,14 @@ public class CsvExtendableDTO {
 
     public void setSeperatorToRead(String seperatorToRead) {
         this.seperatorToRead = seperatorToRead;
+    }
+
+    public int getIdFeature() {
+        return IdFeature;
+    }
+
+    public void setIdFeature(int idFeature) {
+        IdFeature = idFeature;
     }
 
 
