@@ -1,9 +1,11 @@
 package com.tr.csvgenerator.controller;
 
 import com.tr.csvgenerator.ExetendDataService.ExtendCsvService;
+import com.tr.csvgenerator.GenerateDataForSupervised.GenerateDataForSupervised;
 import com.tr.csvgenerator.common.TrApiResponse;
 import com.tr.csvgenerator.dto.CsvConfigDTO;
 import com.tr.csvgenerator.dto.CsvExtendableDTO;
+import com.tr.csvgenerator.dto.GenerateDataForSupervisedDTO;
 import com.tr.csvgenerator.service.CsvGeneratorService;
 import com.wordnik.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,9 @@ public class CsvController {
     private CsvGeneratorService csvGeneratorService;
     @Autowired
     private ExtendCsvService extendCsvService;
+    @Autowired
+    private GenerateDataForSupervised generateDataForSupervised;
+
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/json")
     public TrApiResponse index() {
@@ -83,4 +88,25 @@ public class CsvController {
         return  trApiResponse;
     }
 
+
+    @RequestMapping(value = "/spdg", method = RequestMethod.POST, produces = "application/json")
+    public TrApiResponse generateDataForSupervised(
+            @ApiParam(value = "json example also has the default values", required = true) @Validated @RequestBody GenerateDataForSupervisedDTO generateDataForSupervisedDTO) throws Exception {
+        String validationMessage = generateDataForSupervised.validateInput(generateDataForSupervisedDTO);
+        TrApiResponse trApiResponse = new TrApiResponse();
+        if (validationMessage.equalsIgnoreCase("No Errors")) {
+            boolean result = generateDataForSupervised.GenerateDataForSupervised(generateDataForSupervisedDTO);
+            if (result == true) {
+                trApiResponse.setOk();
+                trApiResponse.put("result", generateDataForSupervisedDTO);
+            } else {
+                // FIXME: 02/03/16 get the error from run
+                trApiResponse.setError("TODO: run error");
+            }
+        } else {
+            trApiResponse.setError(validationMessage);
+            trApiResponse.put("result", generateDataForSupervisedDTO);
+        }
+        return trApiResponse;
     }
+}
