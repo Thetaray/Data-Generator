@@ -295,6 +295,9 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
             if(dataFromFile.size() > 0){
                 m_writer.writeAll(dataFromFile);
             }
+            if(submit != null){
+                while(!submit.isDone()){}
+            }
             m_reader.close();
             m_writer.close();
             File file = new File(demo_File_Name_First);
