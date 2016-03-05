@@ -7,18 +7,13 @@ import com.tr.csvgenerator.FeatureService.FeatureService;
 import com.tr.csvgenerator.dto.CsvExtendableDTO;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.*;
 
 /**
  * Created by roman on 18/01/16.
@@ -28,13 +23,10 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
 
 
-    private  char charSeperator = '*';
-
-
+    protected FeatureService featureService = null;
     @Autowired
     FeatureConfiguration featureConfiguration;
-
-    protected FeatureService featureService = null;
+    private char charSeperator = '*';
     private Character separatorToRead = null;
     private Character separatorToOut = null;
     private int ColumnHeaderName = 1;
@@ -124,6 +116,7 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
         this.m_writer = createWriter();
         executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(2);
         readByLineInFromOriginalFileAndCreateDemoFileWithNewNumberOfColumns();
+        TimeUnit.SECONDS.sleep(1);
         resetFeature();
         createFullFileByDuplicateDemoFileAndAddingRows();
         extensionDto.oneFileCreated();
