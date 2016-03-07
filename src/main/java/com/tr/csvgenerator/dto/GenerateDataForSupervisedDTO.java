@@ -5,52 +5,29 @@ package com.tr.csvgenerator.dto;
  */
 public class GenerateDataForSupervisedDTO {
 
-    protected Double CellMaxBoundary = new Double(100000000);
-    int Small_Group_Pos_Size = 25000;
-    int Small_Group_Neg_Size = 25000;
-
-
-    int Rank = 100;
-    int Train_Pos_Size = 600000;
-    int Train_Neg_Size = 400000;
-    //static int Test_Pos_Size = 700000;
-    //static int Test_Neg_Size = 300000;
-    String TrainDataPath = "/home/naor/Desktop/TrainingSet.csv";
     /* Input to the program */
-    private int PK = 0;
+    int Rank;
+    Double CellMaxBoundary;
+    int Train_Pos_Size;
+    int Train_Neg_Size;
+    int Small_Group_Pos_Size;
+    int Small_Group_Neg_Size;
+    String TrainDataPath = "/home/naor/Desktop/TrainingSet.csv";
+    //int Test_Pos_Size = 700000;
+    //int Test_Neg_Size = 300000;
+    int PK = 0;
+
+
+    public GenerateDataForSupervisedDTO() {
+        Rank = 100;
+        CellMaxBoundary = new Double(100000000);
+        Train_Pos_Size = 600000;
+        Train_Neg_Size = 400000;
+        Small_Group_Pos_Size = 25000;
+        Small_Group_Neg_Size = 25000;
+    }
     //static String TestDataPath = "/home/naor/Desktop/TestingSet.csv";
 
-    public int getTrain_Neg_Size() {
-        return Train_Neg_Size;
-    }
-
-    public void setTrain_Neg_Size(int train_Neg_Size) {
-        Train_Neg_Size = train_Neg_Size;
-    }
-
-    public int getPK() {
-        return PK;
-    }
-
-    public void setPK(int PK) {
-        PK = PK;
-    }
-
-    public int getSmall_Group_Pos_Size() {
-        return Small_Group_Pos_Size;
-    }
-
-    public void setSmall_Group_Pos_Size(int small_Group_Pos_Size) {
-        Small_Group_Pos_Size = small_Group_Pos_Size;
-    }
-
-    public int getSmall_Group_Neg_Size() {
-        return Small_Group_Neg_Size;
-    }
-
-    public void setSmall_Group_Neg_Size(int small_Group_Neg_Size) {
-        Small_Group_Neg_Size = small_Group_Neg_Size;
-    }
 
     public int getRank() {
         return Rank;
@@ -76,6 +53,38 @@ public class GenerateDataForSupervisedDTO {
         Train_Pos_Size = train_Pos_Size;
     }
 
+    public int getTrain_Neg_Size() {
+        return Train_Neg_Size;
+    }
+
+    public void setTrain_Neg_Size(int train_Neg_Size) {
+        Train_Neg_Size = train_Neg_Size;
+    }
+
+    public int getSmall_Group_Pos_Size() {
+        return Small_Group_Pos_Size;
+    }
+
+    public void setSmall_Group_Pos_Size(int small_Group_Pos_Size) {
+        Small_Group_Pos_Size = small_Group_Pos_Size;
+    }
+
+    public int getSmall_Group_Neg_Size() {
+        return Small_Group_Neg_Size;
+    }
+
+    public void setSmall_Group_Neg_Size(int small_Group_Neg_Size) {
+        Small_Group_Neg_Size = small_Group_Neg_Size;
+    }
+
+    public int getPK() {
+        return PK;
+    }
+
+    public void setPK(int PK) {
+        PK = PK;
+    }
+
     public String getTrainDataPath() {
         return TrainDataPath;
     }
@@ -83,4 +92,5 @@ public class GenerateDataForSupervisedDTO {
     public void setTrainDataPath(String trainDataPath) {
         TrainDataPath = trainDataPath;
     }
+
 }

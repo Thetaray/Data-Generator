@@ -28,6 +28,8 @@ public class GenerateDataForSupervisedImpl implements GenerateDataForSupervised 
         int Small_Group_Pos_Size = dto.getSmall_Group_Pos_Size();
         int Small_Group_Neg_Size = dto.getSmall_Group_Neg_Size();
 
+
+        dto.setPK(dto.getRank() + 1);
         SmallDataSetGenerator TrainingSet;
         SmallDataSetGenerator TestingSet;
 
@@ -44,7 +46,9 @@ public class GenerateDataForSupervisedImpl implements GenerateDataForSupervised 
         /* Get Times */
         System.out.println("Finish create rectangle: " + dateFormat.format(Calendar.getInstance().getTime()));
 
+
         File file = new File(dto.getTrainDataPath());
+        file.getParentFile().mkdirs();
         CSVWriter writer = new CSVWriter(new FileWriter(file), ',', CSVWriter.NO_QUOTE_CHARACTER);
 
         boolean firstTime = true;
