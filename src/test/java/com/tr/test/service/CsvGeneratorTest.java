@@ -4,6 +4,7 @@ import au.com.bytecode.opencsv.CSVWriter;
 import com.tr.csvgenerator.CsvJoin.csvJoinerService;
 import com.tr.csvgenerator.ExetendDataService.ExtendCsvService;
 import com.tr.csvgenerator.ExetendDataService.ExtendCsvServiceServiceImpl;
+import com.tr.csvgenerator.GenerateDataForSupervised.PipingHeandler;
 import com.tr.csvgenerator.dto.CsvConfigDTO;
 import com.tr.csvgenerator.dto.CsvExtendableDTO;
 import com.tr.csvgenerator.service.CsvGeneratorService;
@@ -174,5 +175,13 @@ public class CsvGeneratorTest /*extends AbstractTest*/ {
     public  void joinCsvFiles() throws IOException {
         csvJoinerService join = new csvJoinerService();
         join.createCsv();
+    }
+
+    @Ignore
+    @Test
+    public void piping() throws Exception {
+        PipingHeandler p = new PipingHeandler();
+        List<Integer> x = p.PipingHeandler("1,6:12,5,40:52,32", ",");
+        System.out.println(x);
     }
 }

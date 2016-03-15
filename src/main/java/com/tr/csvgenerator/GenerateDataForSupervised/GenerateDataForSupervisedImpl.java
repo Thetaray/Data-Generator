@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,46 +20,56 @@ import java.util.List;
 @Service
 public class GenerateDataForSupervisedImpl implements GenerateDataForSupervised {
 
+    List<Integer> categoryIndexes;
+
     @Override
-    public boolean GenerateDataForSupervised(GenerateDataForSupervisedDTO dto) throws IOException {
+    public String GenerateDataForSupervised(GenerateDataForSupervisedDTO dto) throws IOException {
 
-        int Train_Pos_Size = dto.getTrain_Pos_Size();
-        int Train_Neg_Size = dto.getTrain_Neg_Size();
-        int Small_Group_Pos_Size = dto.getSmall_Group_Pos_Size();
-        int Small_Group_Neg_Size = dto.getSmall_Group_Neg_Size();
+        /*  Read Params */
+        int Rank = dto.getRank();
+        Double Cell_Max_Boundary = dto.getCell_Max_Boundary();
+        int Total_Size = dto.getTotal_Size();
+        int Positive_Percent = dto.getPositive_Percent();
 
-
-        dto.setPK(dto.getRank() + 1);
-        SmallDataSetGenerator TrainingSet;
-        SmallDataSetGenerator TestingSet;
-
-        dto.setPK(dto.getRank() + 1);
-
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-
-        /* Get Times */
-        System.out.println("start: " + dateFormat.format(Calendar.getInstance().getTime()));
-
-        /* Make Shape*/
-        Rectangle rec = new Rectangle(dto.getRank(), dto.getCellMaxBoundary());
-
-        /* Get Times */
-        System.out.println("Finish create rectangle: " + dateFormat.format(Calendar.getInstance().getTime()));
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        Date date = new Date();
+        String FilePath = System.getProperty("user.dir") + File.pathSeparator + dateFormat.format(date) + "_SP_DataSet_(" + Total_Size + ").csv";
 
 
-        File file = new File(dto.getTrainDataPath());
+        /*  Transform params for general to specific */
+        int Train_Pos_Size = Total_Size * Positive_Percent / 100;
+        int Train_Neg_Size = Total_Size - Train_Pos_Size;
+        SmallDataSetGenerator BatchOfDataSet;
+
+
+        /*  Make Shape  */
+        Rectangle rec = new Rectangle(Rank + 1, Cell_Max_Boundary, categoryIndexes); // +1 for label
+
+        /*  Generate the .csv file and directories to it    */
+        File file = new File(FilePath);
         file.getParentFile().mkdirs();
         CSVWriter writer = new CSVWriter(new FileWriter(file), ',', CSVWriter.NO_QUOTE_CHARACTER);
+
+
+        /* Calculate the batch  size  */
+        long SampleSize = (Rank + 2) * Double.SIZE;                         // Size of one sample
+        long TotalMemForJVM = Runtime.getRuntime().totalMemory();           // Total memory available to JVM (bytes)
+        int Batch_Size = (int) ((TotalMemForJVM / SampleSize) * 0.8);           // Amount of samples to one batch
+        int Small_Group_Pos_Size = Batch_Size * Positive_Percent / 100;   // Ratio of small group from the total
+        int Small_Group_Neg_Size = Batch_Size - Small_Group_Pos_Size;       //
 
         boolean firstTime = true;
 
 
         while (Train_Pos_Size > 0 && Train_Neg_Size > 0) {
             /* Create The Data */
-            TrainingSet = new SmallDataSetGenerator(Small_Group_Pos_Size, Small_Group_Neg_Size, rec);
-
+            if ((Small_Group_Pos_Size + Small_Group_Neg_Size) < (Train_Pos_Size + Train_Neg_Size)) {
+                BatchOfDataSet = new SmallDataSetGenerator(Small_Group_Pos_Size, Small_Group_Neg_Size, rec);
+            } else {
+                BatchOfDataSet = new SmallDataSetGenerator(Train_Pos_Size, Train_Neg_Size, rec);
+            }
             /* Write Data To File*/
-            writeToFile(TrainingSet, writer, firstTime, dto.getPK());
+            writeToFile(BatchOfDataSet, writer, firstTime, 1);//pk=1
 
             firstTime = false;
             Train_Pos_Size -= Small_Group_Pos_Size;
@@ -68,22 +78,41 @@ public class GenerateDataForSupervisedImpl implements GenerateDataForSupervised 
         }
         writer.close();
 
-        System.out.println("Finish create TrainingSet: " + dateFormat.format(Calendar.getInstance().getTime()));
-
-        return true;
+        return file.getPath();
     }
 
     @Override
-    public String validateInput(GenerateDataForSupervisedDTO dto) {
-        StringBuffer errMsg = new StringBuffer("No Errors");
+    public String validateInput(GenerateDataForSupervisedDTO dto) throws Exception {
 
-        if (dto.getPK() > dto.getRank())
-            errMsg.append("*************** Pk out of boundary **************");
-        if (dto.getRank() < 1)
-            errMsg.append("*************** Rank size lower then one *************");
+        StringBuilder res = new StringBuilder();
+        categoryIndexes = new ArrayList<>();
+
+        /*  Read Params */
+        int Rank = dto.getRank();
+        Double Cell_Max_Boundary = dto.getCell_Max_Boundary();
+        int Total_Size = dto.getTotal_Size();
+        int Positive_Percent = dto.getPositive_Percent();
 
 
-        return errMsg.toString();
+        /*  Validate inputs */
+        if (Rank <= 0) {
+            res.append("ERROR: Rank must be bigger than 0\n");
+        }
+        if (Total_Size <= 0) {
+            res.append("ERROR: Total_Size Must by bigger than 0.\n");
+        }
+        if (Positive_Percent <= 0 || Positive_Percent >= 100) {
+            res.append("ERROR: Positive_Percent must by number between 0-100.\n");
+        }
+
+//        if(!dto.getPiping().equals("")){
+//            categoryIndexes = PipingHeandler.PipingHeandler(dto.getPiping(),",");
+//        }
+        if (res.toString().isEmpty()) {
+            res.append("OK");
+        }
+
+        return res.toString();
     }
 
     private void writeToFile(SmallDataSetGenerator trainingSet, CSVWriter writer, boolean firstTime, int PK) throws IOException {

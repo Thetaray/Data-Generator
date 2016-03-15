@@ -9,7 +9,7 @@ import java.io.IOException;
  */
 public interface GenerateDataForSupervised {
 
-    boolean GenerateDataForSupervised(GenerateDataForSupervisedDTO dto) throws IOException;
+    String GenerateDataForSupervised(GenerateDataForSupervisedDTO dto) throws IOException;
 
-    String validateInput(GenerateDataForSupervisedDTO dto);
+    String validateInput(GenerateDataForSupervisedDTO dto) throws Exception;
 }

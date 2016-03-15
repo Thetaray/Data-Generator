@@ -90,18 +90,19 @@ public class CsvController {
 
 
     @RequestMapping(value = "/spdg", method = RequestMethod.POST, produces = "application/json")
-    public TrApiResponse generateDataForSupervised(
-            @ApiParam(value = "json example also has the default values", required = true) @Validated @RequestBody GenerateDataForSupervisedDTO generateDataForSupervisedDTO) throws Exception {
+    public TrApiResponse generateDataForSupervised(@ApiParam(value = "json example also has the default values", required = true) @Validated @RequestBody GenerateDataForSupervisedDTO generateDataForSupervisedDTO)throws Exception
+    {
         String validationMessage = generateDataForSupervised.validateInput(generateDataForSupervisedDTO);
         TrApiResponse trApiResponse = new TrApiResponse();
-        if (validationMessage.equalsIgnoreCase("No Errors")) {
-            boolean result = generateDataForSupervised.GenerateDataForSupervised(generateDataForSupervisedDTO);
-            if (result == true) {
+        if (validationMessage.equalsIgnoreCase("OK"))
+        {
+            String result = generateDataForSupervised.GenerateDataForSupervised(generateDataForSupervisedDTO);
+            trApiResponse.setMessage(result);
+            if (!result.contains("ERROR")) {
                 trApiResponse.setOk();
                 trApiResponse.put("result", generateDataForSupervisedDTO);
             } else {
-                // FIXME: 02/03/16 get the error from run
-                trApiResponse.setError("TODO: run error");
+                trApiResponse.setError(result);
             }
         } else {
             trApiResponse.setError(validationMessage);
