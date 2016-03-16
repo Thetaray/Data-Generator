@@ -33,8 +33,11 @@ public class GenerateDataForSupervisedImpl implements GenerateDataForSupervised 
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         Date date = new Date();
+
+
+        //TODO - it's need to bea a base path argument
         //String FilePath = System.getProperty("user.dir") + File.separator + dateFormat.format(date) + "_SP_DataSet_(" + Total_Size + ").csv";
-        String FilePath = "/opt/tr/input/csvgen/output" + File.separator + dateFormat.format(date) + "_SP_DataSet_(" + Total_Size + ").csv";
+        String FilePath = "/opt/tr/input/csvgen/output/" + dateFormat.format(date) + "_SP_DataSet_(" + Total_Size + ").csv";
 
         /*  Transform params for general to specific */
         int Train_Pos_Size = Total_Size * Positive_Percent / 100;
