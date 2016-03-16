@@ -23,7 +23,7 @@ public class SmallDataSetGenerator {
         this.rec = rec;
         this.n = rec.getDimension();
         int m = pos + neg;
-        this.matrix = new Double[m][n + 1];
+        this.matrix = new Double[m - 1][n + 1];
 
         addPositivesItems();
         setLabelAtt();
@@ -55,7 +55,7 @@ public class SmallDataSetGenerator {
     private void addNegativeItems() {
         Random r = new Random();
 
-        for (int i = pos; i < pos + neg; i++) {
+        for (int i = pos; i < pos + neg - 1; i++) {
             int randPosIndex = r.nextInt(pos);
             int NumOfAttChange = r.nextInt(n);
             ArrayList<Integer> indexToChange = new ArrayList(NumOfAttChange);
@@ -84,7 +84,7 @@ public class SmallDataSetGenerator {
     }
 
     public int numOfSamples() {
-        return pos + neg;
+        return pos + neg - 1;
     }
 
     public Double valAt(int i, int j) {

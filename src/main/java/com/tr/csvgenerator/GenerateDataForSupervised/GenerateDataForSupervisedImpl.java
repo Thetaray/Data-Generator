@@ -46,7 +46,7 @@ public class GenerateDataForSupervisedImpl implements GenerateDataForSupervised 
 
 
         /*  Make Shape  */
-        Rectangle rec = new Rectangle(Rank + 1, Cell_Max_Boundary, categoryIndexes); // +1 for label
+        Rectangle rec = new Rectangle(Rank, Cell_Max_Boundary, categoryIndexes);
 
         /*  Generate the .csv file and directories to it    */
         File file = new File(FilePath);
@@ -57,8 +57,8 @@ public class GenerateDataForSupervisedImpl implements GenerateDataForSupervised 
         /* Calculate the batch  size  */
         long SampleSize = (Rank + 2) * Double.SIZE;                         // Size of one sample
         long TotalMemForJVM = Runtime.getRuntime().totalMemory();           // Total memory available to JVM (bytes)
-        int Batch_Size = (int) ((TotalMemForJVM / SampleSize) * 0.8);           // Amount of samples to one batch
-        int Small_Group_Pos_Size = Batch_Size * Positive_Percent / 100;   // Ratio of small group from the total
+        int Batch_Size = (int) ((TotalMemForJVM / SampleSize) * 0.8);       // Amount of samples to one batch
+        int Small_Group_Pos_Size = Batch_Size * Positive_Percent / 100;     // Ratio of small group from the total
         int Small_Group_Neg_Size = Batch_Size - Small_Group_Pos_Size;       //
 
         boolean firstTime = true;
