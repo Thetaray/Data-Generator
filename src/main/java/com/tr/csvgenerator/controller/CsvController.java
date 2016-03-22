@@ -7,15 +7,18 @@ import com.tr.csvgenerator.dto.CsvConfigDTO;
 import com.tr.csvgenerator.dto.CsvExtendableDTO;
 import com.tr.csvgenerator.dto.GenerateDataForSupervisedDTO;
 import com.tr.csvgenerator.service.CsvGeneratorService;
-import com.wordnik.swagger.annotations.*;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static com.tr.csvgenerator.common.TrApiResponse.StatusCode;
 
@@ -110,4 +113,20 @@ public class CsvController {
         }
         return trApiResponse;
     }
+
+
+     @RequestMapping(method = RequestMethod.GET, path="/jsonconfig", produces = "application/json")
+     @ApiOperation(value = "generateJson" , nickname = "generateJson")
+     @ApiImplicitParams(value={
+             @ApiImplicitParam(name="name of feature", value="field", allowMultiple = false,
+                     required=true, dataType="string", paramType = "query"),
+             @ApiImplicitParam(name="values", value="header-test-value", allowMultiple = true,
+                     required=true, dataType="array", paramType = "query")
+     })
+     public TrApiResponse getJson(@RequestParam(value="name of feature")String jj,@RequestParam(value = "values")ArrayList<String> values){
+       TrApiResponse trApiResponse = new TrApiResponse();
+         System.out.println(jj);
+         return  trApiResponse;
+
+     }
 }
