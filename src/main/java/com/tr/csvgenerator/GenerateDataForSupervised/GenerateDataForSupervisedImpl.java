@@ -120,7 +120,8 @@ public class GenerateDataForSupervisedImpl implements GenerateDataForSupervised 
         return res.toString();
     }
 
-    private void writeToFile(SmallDataSetGenerator trainingSet, CSVWriter writer, boolean firstTime, int PK) throws IOException {
+    private void writeToFile(SmallDataSetGenerator trainingSet, CSVWriter writer, boolean firstTime, int PK) throws IOException
+    {
         int n = trainingSet.getDimension();
         int m = trainingSet.numOfSamples();
         List<String[]> records = null;

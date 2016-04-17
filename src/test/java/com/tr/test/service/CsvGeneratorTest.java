@@ -107,7 +107,7 @@ public class CsvGeneratorTest /*extends AbstractTest*/ {
 //            System.out.println();
 //        }
 
-        File csvFilename = new File("target/test.csv");
+        File csvFilename = new File("target/Monky.csv");
         CSVWriter csvWriter = new CSVWriter(new FileWriter(csvFilename), ',');
         csvWriter.writeAll(biggerData);
         csvWriter.flush();
@@ -155,7 +155,7 @@ public class CsvGeneratorTest /*extends AbstractTest*/ {
         dto.setTimeStampFeature(1);
         dto.setOutputFolder("/home/roman/Documents/CsvgeneratorTemp/");
         //dto.setPathToCsv("/home/roman/Documents/Data_for_Tests/OffLine_BLDG_66_HVAC.csv");
-        dto.setPathToCsv("/home/roman/Documents/test Data Csv/raw_data_for_demo_20052015.csv");
+        dto.setPathToCsv("/home/roman/Documents/Monky Data Csv/raw_data_for_demo_20052015.csv");
         extd.validateInput(dto);
         extd.extendToCsvFile(dto);
     }

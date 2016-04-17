@@ -1,5 +1,6 @@
 package com.tr.csvgenerator.controller;
 
+import com.tr.csvgenerator.DataGenerator.*;
 import com.tr.csvgenerator.ExetendDataService.ExtendCsvService;
 import com.tr.csvgenerator.GenerateDataForSupervised.GenerateDataForSupervised;
 import com.tr.csvgenerator.common.TrApiResponse;
@@ -9,7 +10,11 @@ import com.tr.csvgenerator.dto.GenerateDataForSupervisedDTO;
 import com.tr.csvgenerator.service.CsvGeneratorService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,6 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ArrayList;
 
 import static com.tr.csvgenerator.common.TrApiResponse.StatusCode;

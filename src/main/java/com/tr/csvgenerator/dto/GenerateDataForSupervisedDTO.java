@@ -1,6 +1,9 @@
 package com.tr.csvgenerator.dto;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Naor Ben David on 02/03/16.
  */
@@ -11,6 +14,8 @@ public class GenerateDataForSupervisedDTO {
     Integer Positive_Percent;
     Integer Rank;
     Double Cell_Max_Boundary;
+
+
     //Integer label_column = 1;
     //Integer PK = 0;
     //String Piping;
