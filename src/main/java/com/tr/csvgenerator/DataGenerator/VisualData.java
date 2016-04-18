@@ -52,7 +52,7 @@ public class VisualData {
     }
 
 
-    public static void main(String[] args) throws Exception {
+    public static void main1(String[] args) throws Exception {
 
         //SpringApplication.run(Application.class, args);
 
