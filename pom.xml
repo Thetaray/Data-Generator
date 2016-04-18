@@ -72,7 +72,7 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<docker.image.prefix>172.16.1.68:5000/thetaray</docker.image.prefix>
+		<docker.image.prefix>docker-registry.thetaray-aws.com:5000/thetaray</docker.image.prefix>
 	</properties>
 
 
