@@ -1,7 +1,8 @@
 package com.tr.csvgenerator.controller;
 
-import com.tr.csvgenerator.DataGenerator.Data;
-import com.tr.csvgenerator.DataGenerator.DataGenService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tr.csvgenerator.DataGenerator.*;
+import com.tr.csvgenerator.common.TrApiResponse;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by IntelliJ IDEA.
@@ -26,17 +29,31 @@ import java.util.List;
 @Api(value = "Random Data Generate")
 public class DataGenController {
 
-    private DataGenService dataGenService = new DataGenService();
+    @Autowired
+    private DataGenService dataGenService;// = new DataGenServiceImpl();
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST, produces = "application/json")
-    public String generateRandomData(
+    @RequestMapping(value = "/create1", method = RequestMethod.POST, produces = "application/json")//
+    public @ResponseBody
+    TrApiResponse generateRandomData(
             @ApiParam(value = "json example also has the default values", required = true)
-            @Validated @RequestBody Data data)throws Exception
+            @RequestBody Data data)throws Exception
     {
-        dataGenService.gen(data);
-        return data.getOutputFile();
+        String result = dataGenService.gen(data);
+        TrApiResponse trApiResponse = new TrApiResponse();
+        trApiResponse.setMessage(result);
+        if (!result.contains("ERROR"))
+        {
+            trApiResponse.setOk();
+            trApiResponse.put("result", data);
+        }
+        else {
+            trApiResponse.setError(result);
+        }
+        return trApiResponse;
+
+
 //        String validationMessage = generateDataForSupervised.validateInput(generateDataForSupervisedDTO);
-//        TrApiResponse trApiResponse = new TrApiResponse();
+//
 //        if (validationMessage.equalsIgnoreCase("OK"))
 //        {
 //            String result = generateDataForSupervised.GenerateDataForSupervised(generateDataForSupervisedDTO);

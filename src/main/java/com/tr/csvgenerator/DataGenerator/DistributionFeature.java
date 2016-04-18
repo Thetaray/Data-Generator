@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class DistributionFeature implements Feature // extends AbstractFeature
 {
-    private static RandomDataGenerator r = new RandomDataGenerator();
+
     private String Model = "";
     private List<Double> Params;
 
@@ -38,12 +38,11 @@ public class DistributionFeature implements Feature // extends AbstractFeature
     public DistributionFeature(String model, List<Double> Params, Long seed) {
         this.Model = model;
         this.Params = Params;
-        if(seed != (Long)null)
-            r.reSeed(seed);
     }
 
     @Override
     public Object NextValue() throws Exception {
+        RandomDataGenerator r = Data.getRandom();
         Double res = 0.0;
         switch (Model.toLowerCase()) {
             case "normal":

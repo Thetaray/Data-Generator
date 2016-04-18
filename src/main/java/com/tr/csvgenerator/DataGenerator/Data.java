@@ -1,10 +1,14 @@
 package com.tr.csvgenerator.DataGenerator;
 
 
+import org.apache.commons.math3.random.RandomDataGenerator;
+
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -13,10 +17,11 @@ import java.util.*;
  */
 public class Data {
 
+
     /*  User Input  */
     private String outputFile;
     private int numOfFeature;
-    private long seed = 1;
+    private long seed;
     private int pk_column = 0;
     private List<Container> Containers;
     private Integer Shuffle = 0; //0 - no shuffle, 1 - cycle shuffle, 2 - random
@@ -24,7 +29,7 @@ public class Data {
     /*  Internal use    */
     private int pk = 1;
     private int lastIndex = 0;
-    private Random RFI = null;
+    private static RandomDataGenerator RFI = null;
 
     public Data(String outputPath, long seed, int NumOfFeature, int pk_column, ArrayList<Container> containers){
 
@@ -52,6 +57,7 @@ public class Data {
 
             outputFile = System.getProperty("user.dir") + File.separator + dateFormat.format(date) + "_DataGen_(" + Total_Size + ").csv";
         }
+        RFI = new RandomDataGenerator();
     }
 
     public String getOutputFile() {
@@ -70,12 +76,9 @@ public class Data {
         this.numOfFeature = numOfFeature;
     }
 
-    public long getSeed() {
-        return seed;
-    }
-
     public void setSeed(long seed) {
         this.seed = seed;
+        RFI.reSeed(seed);
     }
 
     public List<Container> getContainers() {
@@ -161,11 +164,7 @@ public class Data {
         }
         if(shuffle == 2)
         {
-            if(RFI==null) {
-                RFI = new Random();
-                RFI.setSeed(seed);
-            }
-            return RFI.nextInt(getContainers().size());
+            return RFI.nextInt(0,getContainers().size()-1);
         }
         else throw new Exception("ERROR: bad shuffle number ");
     }
@@ -180,5 +179,9 @@ public class Data {
         sb.append(", Containers=").append(Containers);
         sb.append(']');
         return sb.toString();
+    }
+
+    public static RandomDataGenerator getRandom() {
+        return RFI;
     }
 }
