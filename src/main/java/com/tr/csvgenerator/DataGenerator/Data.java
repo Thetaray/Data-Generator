@@ -45,8 +45,12 @@ public class Data {
     }
 
     private void initDefaultValues() {
+        RFI = new RandomDataGenerator();
+    }
 
-        if(this.outputFile==null)
+    public String getOutputFile() {
+
+        if(outputFile==null)
         {
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
             Date date = new Date();
@@ -61,10 +65,6 @@ public class Data {
             else
                 outputFile = "/opt/tr/input/csvgen/output/" + dateFormat.format(date) + "_DataSet_(" + Total_Size + ").csv";
         }
-        RFI = new RandomDataGenerator();
-    }
-
-    public String getOutputFile() {
         return outputFile;
     }
 
