@@ -55,7 +55,11 @@ public class Data {
                 for (Container c:Containers)
                     Total_Size+=c.getNumberOfElements();
 
-            outputFile = System.getProperty("user.dir") + File.separator + dateFormat.format(date) + "_DataGen_(" + Total_Size + ").csv";
+            String FilePath ="";
+            if(System.getProperty("user.name").equals("naor"))
+                outputFile = System.getProperty("user.dir") + File.separator + dateFormat.format(date) + "_DataSet_(" + Total_Size + ").csv";
+            else
+                outputFile = "/opt/tr/input/csvgen/output/" + dateFormat.format(date) + "_DataSet_(" + Total_Size + ").csv";
         }
         RFI = new RandomDataGenerator();
     }
