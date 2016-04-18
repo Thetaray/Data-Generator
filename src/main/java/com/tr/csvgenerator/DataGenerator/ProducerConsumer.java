@@ -25,58 +25,104 @@ public class ProducerConsumer {
     public ProducerConsumer(Data dataToGen) throws InterruptedException {
         this.dataToGen = dataToGen;
         Consumer2 consumer2 = new Consumer2();
-        Consumer2 producer2 = new Consumer2();
-        for (int i = 0 ; i < 2 ; i++){
-            Future<Boolean> submit = threadpool.submit(consumer2);
-            jobsIsDone.add(submit);
-        }
+        Producer2 producer2 = new Producer2();
+        Future<Boolean> call1 = threadpool.submit(consumer2);
+        Future<Boolean> call2= threadpool.submit(producer2);
+        jobsIsDone.add(call1);
+        jobsIsDone.add(call2);
+
         for(Future<Boolean> fut : jobsIsDone){
             try {
                 //print the return value of Future, notice the output delay in console
                 // because Future.get() waits for task to get completed
-                System.out.println(new Date()+ "::"+fut.get()
-                );
+                fut.get();
+                //System.out.println(new Date()+ "::"+fut.get());
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
         }
         //shut down the executor service now
         threadpool.shutdown();
-    }
+
         /*Thread producer = new Producer();
         Thread consumer = new Consumer();
         producer.start();
         consumer.start();
         producer.join();
         consumer.join();*/
-
-
-
-
-    public  class  Consumer2 implements Callable<Boolean>{
-
-        @Override
-        public Boolean call() throws Exception {
-            return null;
-        }
     }
 
 
-    public class Consumer extends Thread {
-        Consumer() {
-            super("Consumer");
-        }
+
+
+
+
+//    public class Consumer extends Thread {
+//        Consumer() {
+//            super("Consumer");
+//        }
+//
+//        @Override
+//        public void run() {
+//
+//            CSVWriter writer = null;
+//            //String FilePath = "/home/naor/Desktop/test1";
+//            File file = new File(dataToGen.getOutputFile());
+//            file.getParentFile().mkdirs();
+//            try {
+//                    //TODO: detriment the spliter
+//                    writer = new CSVWriter(new FileWriter(file), ',', CSVWriter.NO_QUOTE_CHARACTER);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//            List<Object> nextLine;
+//            while (!ProducerFinish || !buffer.isEmpty())
+//            {
+//                try {
+//                    Thread.sleep(1);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                synchronized(buffer)
+//                {
+//                    Iterator it = buffer.iterator();
+//                    while (it.hasNext())
+//                    {
+//                        nextLine = (List<Object>) it.next();
+//                        //System.out.println(nextLine);
+//                        String[] arr = new String[nextLine.size()];
+//                        for(int i=0;i<arr.length;i++)
+//                            arr[i] = nextLine.get(i).toString();
+//
+//                        writer.writeNext((String[]) arr);
+//                        it.remove();
+//                    }
+//                }
+//            }
+//            try {
+//                writer.close();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
+
+    private class Consumer2 implements Callable
+    {
+
+        public Consumer2(){}
 
         @Override
-        public void run() {
+        public Boolean call() {
 
             CSVWriter writer = null;
             //String FilePath = "/home/naor/Desktop/test1";
             File file = new File(dataToGen.getOutputFile());
             file.getParentFile().mkdirs();
             try {
-                    //TODO: detriment the spliter
-                    writer = new CSVWriter(new FileWriter(file), ',', CSVWriter.NO_QUOTE_CHARACTER);
+                //TODO: detriment the spliter
+                writer = new CSVWriter(new FileWriter(file), ',', CSVWriter.NO_QUOTE_CHARACTER);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -109,19 +155,74 @@ public class ProducerConsumer {
                 writer.close();
             } catch (IOException e) {
                 e.printStackTrace();
+                return false;
             }
+            return true;
+        }
+
+        private long factorial(int number) throws InterruptedException
+        {
+            if (number < 0)
+            {
+                throw new IllegalArgumentException("Number must be greater than zero");
+            } long result = 1;
+
+            while (number > 0) {
+
+                Thread.sleep(1); // adding delay for example
+                result = result * number;
+                //System.out.println(result+"*"+number);
+                number--;
+            }
+            return result;
         }
     }
 
-    public class Producer extends Thread
+
+//    public class Producer extends Thread
+//    {
+//        int i = 0;
+//        Producer() {
+//            super("Producer");
+//        }
+//
+//        @Override
+//        public void run()
+//        {
+//            try
+//            {
+//                boolean insert = false;
+//                while (dataToGen.hasNext())
+//                {
+//                    insert = false ;
+//                    i++;
+//                    while(insert!=true)
+//                    {
+//                        //TODO: clculate buffer_Size
+//                        if (buffer.size() < 1000) {
+//                            //buffer.add(new String(i + ""));
+//                            buffer.add(dataToGen.Next());
+//                            insert = true;
+//                        }
+//                        else
+//                            Thread.sleep(10);
+//                    }
+//                }
+//                ProducerFinish = true;
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
+
+    private class Producer2 implements Callable
     {
+
         int i = 0;
-        Producer() {
-            super("Producer");
-        }
+        public Producer2(){}
 
         @Override
-        public void run()
+        public Boolean call()
         {
             try
             {
@@ -145,7 +246,10 @@ public class ProducerConsumer {
                 ProducerFinish = true;
             } catch (Exception e) {
                 e.printStackTrace();
+                return false;
             }
+            return true;
         }
+
     }
 }
