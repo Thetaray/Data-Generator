@@ -29,9 +29,8 @@ public class RegularContainer implements Container
     public RegularContainer() {
     }
 
-    public RegularContainer setLabel(String label) {
+    public void setLabel(String label) {
         this.label = label;
-        return this;
     }
 
     public RegularContainer setLabelColumn(Integer labelColumn) {

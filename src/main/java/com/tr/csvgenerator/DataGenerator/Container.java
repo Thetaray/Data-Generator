@@ -22,4 +22,6 @@ public interface Container {
     public String getLabel();
 
     public Integer getLabelColumn();
+
+    void setLabel(String no_label);
 }

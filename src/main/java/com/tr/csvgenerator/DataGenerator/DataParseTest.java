@@ -29,9 +29,9 @@ public class DataParseTest {
         value = mapper.writeValueAsString(f1);
         System.out.println(value);
 
-        RegularContainer c = new RegularContainer(new ArrayList<Feature>(Arrays.asList(f1,f2)),1000)
-                .setLabelColumn(2)
-                .setLabel("0");
+        RegularContainer c = new RegularContainer(new ArrayList<Feature>(Arrays.asList(f1,f2)),1000);
+                c.setLabelColumn(2);
+                c.setLabel("0");
 
         value = mapper.writeValueAsString(c);
         System.out.println(value);
@@ -74,6 +74,7 @@ public class DataParseTest {
         Data value = mapper.readValue(json, Data.class);
         System.out.println(value);
     }
+
     @Test
     public void testJsonToObject2() throws IOException {
 

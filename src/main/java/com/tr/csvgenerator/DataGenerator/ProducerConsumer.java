@@ -43,70 +43,10 @@ public class ProducerConsumer {
         }
         //shut down the executor service now
         threadpool.shutdown();
-
-        /*Thread producer = new Producer();
-        Thread consumer = new Consumer();
-        producer.start();
-        consumer.start();
-        producer.join();
-        consumer.join();*/
     }
 
 
 
-
-
-
-//    public class Consumer extends Thread {
-//        Consumer() {
-//            super("Consumer");
-//        }
-//
-//        @Override
-//        public void run() {
-//
-//            CSVWriter writer = null;
-//            //String FilePath = "/home/naor/Desktop/test1";
-//            File file = new File(dataToGen.getOutputFile());
-//            file.getParentFile().mkdirs();
-//            try {
-//                    //TODO: detriment the spliter
-//                    writer = new CSVWriter(new FileWriter(file), ',', CSVWriter.NO_QUOTE_CHARACTER);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//            List<Object> nextLine;
-//            while (!ProducerFinish || !buffer.isEmpty())
-//            {
-//                try {
-//                    Thread.sleep(1);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//                synchronized(buffer)
-//                {
-//                    Iterator it = buffer.iterator();
-//                    while (it.hasNext())
-//                    {
-//                        nextLine = (List<Object>) it.next();
-//                        //System.out.println(nextLine);
-//                        String[] arr = new String[nextLine.size()];
-//                        for(int i=0;i<arr.length;i++)
-//                            arr[i] = nextLine.get(i).toString();
-//
-//                        writer.writeNext((String[]) arr);
-//                        it.remove();
-//                    }
-//                }
-//            }
-//            try {
-//                writer.close();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
 
     private class Consumer2 implements Callable
     {
@@ -114,19 +54,13 @@ public class ProducerConsumer {
         public Consumer2(){}
 
         @Override
-        public Boolean call() {
+        public Boolean call() throws IOException {
 
-            CSVWriter writer = null;
             //String FilePath = "/home/naor/Desktop/test1";
             File file = new File(dataToGen.getOutputFile());
+            //TODO: detriment the spliter
             file.getParentFile().mkdirs();
-            try {
-                //TODO: detriment the spliter
-                writer = new CSVWriter(new FileWriter(file), ',', CSVWriter.NO_QUOTE_CHARACTER);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
+            CSVWriter writer = new CSVWriter(new FileWriter(file), ',', CSVWriter.NO_QUOTE_CHARACTER);
             List<Object> nextLine;
             while (!ProducerFinish || !buffer.isEmpty())
             {
@@ -177,43 +111,6 @@ public class ProducerConsumer {
             return result;
         }
     }
-
-
-//    public class Producer extends Thread
-//    {
-//        int i = 0;
-//        Producer() {
-//            super("Producer");
-//        }
-//
-//        @Override
-//        public void run()
-//        {
-//            try
-//            {
-//                boolean insert = false;
-//                while (dataToGen.hasNext())
-//                {
-//                    insert = false ;
-//                    i++;
-//                    while(insert!=true)
-//                    {
-//                        //TODO: clculate buffer_Size
-//                        if (buffer.size() < 1000) {
-//                            //buffer.add(new String(i + ""));
-//                            buffer.add(dataToGen.Next());
-//                            insert = true;
-//                        }
-//                        else
-//                            Thread.sleep(10);
-//                    }
-//                }
-//                ProducerFinish = true;
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
 
     private class Producer2 implements Callable
     {

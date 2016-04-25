@@ -1,13 +1,11 @@
 package com.tr.csvgenerator.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tr.csvgenerator.DataGenerator.*;
 import com.tr.csvgenerator.common.TrApiResponse;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,7 +30,7 @@ public class DataGenController {
     @Autowired
     private DataGenService dataGenService;// = new DataGenServiceImpl();
 
-    @RequestMapping(value = "/create1", method = RequestMethod.POST, produces = "application/json")//
+    @RequestMapping(value = "/create1", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
     TrApiResponse generateRandomData(
             @ApiParam(value = "json example also has the default values", required = true)
@@ -50,24 +48,5 @@ public class DataGenController {
             trApiResponse.setError(result);
         }
         return trApiResponse;
-
-
-//        String validationMessage = generateDataForSupervised.validateInput(generateDataForSupervisedDTO);
-//
-//        if (validationMessage.equalsIgnoreCase("OK"))
-//        {
-//            String result = generateDataForSupervised.GenerateDataForSupervised(generateDataForSupervisedDTO);
-//            trApiResponse.setMessage(result);
-//            if (!result.contains("ERROR")) {
-//                trApiResponse.setOk();
-//                trApiResponse.put("result", generateDataForSupervisedDTO);
-//            } else {
-//                trApiResponse.setError(result);
-//            }
-//        } else {
-//            trApiResponse.setError(validationMessage);
-//            trApiResponse.put("result", generateDataForSupervisedDTO);
-//        }
-//        return trApiResponse;
     }
 }
