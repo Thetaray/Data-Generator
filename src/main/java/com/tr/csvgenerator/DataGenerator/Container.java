@@ -10,7 +10,7 @@ import java.util.List;
  * Mail: naor.bendaivd@thetaray.com
  */
 
-@JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, include= JsonTypeInfo.As.PROPERTY, property="@class")
+@JsonTypeInfo(use = JsonTypeInfo.Id.MINIMAL_CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 public interface Container {
 
     public List<Object> Next() throws Exception;
@@ -21,7 +21,7 @@ public interface Container {
 
     public String getLabel();
 
-    public Integer getLabelColumn();
-
     void setLabel(String no_label);
+
+    public Integer getLabelColumn();
 }

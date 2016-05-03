@@ -1,18 +1,16 @@
 package com.tr.csvgenerator.controller;
 
-import com.tr.csvgenerator.DataGenerator.*;
+import com.tr.csvgenerator.DataGenerator.Data;
+import com.tr.csvgenerator.DataGenerator.DataGenService;
+import com.tr.csvgenerator.DataGenerator.DataVisualizationService;
 import com.tr.csvgenerator.common.TrApiResponse;
-import com.wordnik.swagger.annotations.Api;
-import com.wordnik.swagger.annotations.ApiParam;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.ArrayList;
-import java.util.Arrays;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -28,9 +26,12 @@ import java.util.Arrays;
 public class DataGenController {
 
     @Autowired
-    private DataGenService dataGenService;// = new DataGenServiceImpl();
+    private DataGenService dataGenService;
 
-    @RequestMapping(value = "/create1", method = RequestMethod.POST, produces = "application/json")
+    @Autowired
+    private DataVisualizationService dataVisualizationService;
+
+    @RequestMapping(value = "/create", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
     TrApiResponse generateRandomData(
             @ApiParam(value = "json example also has the default values", required = true)
@@ -48,5 +49,22 @@ public class DataGenController {
             trApiResponse.setError(result);
         }
         return trApiResponse;
+    }
+
+    @RequestMapping(value = "/DataVisualization", method = RequestMethod.POST, produces = "application/json")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "x", value = "field", allowMultiple = false,
+                    required = true, dataType = "integer", paramType = "query"),
+            @ApiImplicitParam(name = "y", value = "field", allowMultiple = false,
+                    required = true, dataType = "integer", paramType = "query"),
+            @ApiImplicitParam(name = "z", value = "field", allowMultiple = false,
+                    required = true, dataType = "integer", paramType = "query")
+    })
+    public
+    @ResponseBody
+    void DataVisualization(
+            @RequestBody Data data,
+            @RequestParam(value = "x") int x, @RequestParam(value = "y") int y, @RequestParam(value = "z") int z) throws Exception {
+        dataVisualizationService.drawData(data, x, y, z);
     }
 }

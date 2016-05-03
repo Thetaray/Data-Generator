@@ -18,18 +18,16 @@ import java.util.List;
 public class Data {
 
 
+    private static RandomDataGenerator RFI = null;
     /*  User Input  */
     private String outputFile;
-    private int numOfFeature;
     private long seed;
     private int pk_column = 0;
     private List<Container> Containers;
     private Integer Shuffle = 0; //0 - no shuffle, 1 - cycle shuffle, 2 - random
-
     /*  Internal use    */
     private int pk = 1;
     private int lastIndex = 0;
-    private static RandomDataGenerator RFI = null;
 
     public Data(String outputPath, long seed, int NumOfFeature, int pk_column, ArrayList<Container> containers){
 
@@ -42,6 +40,10 @@ public class Data {
 
     public Data() {
         initDefaultValues();
+    }
+
+    public static RandomDataGenerator getRandom() {
+        return RFI;
     }
 
     private void initDefaultValues() {
@@ -70,14 +72,6 @@ public class Data {
 
     public void setOutputFile(String outputFile) {
         this.outputFile = outputFile;
-    }
-
-    public int getNumOfFeature() {
-        return numOfFeature;
-    }
-
-    public void setNumOfFeature(int numOfFeature) {
-        this.numOfFeature = numOfFeature;
     }
 
     public void setSeed(long seed) {
@@ -178,14 +172,9 @@ public class Data {
         final StringBuffer sb = new StringBuffer("Data{");
         sb.append("outputFile='").append(outputFile).append('\'');
         sb.append(", seed='").append(seed).append('\'');
-        sb.append(", numOfFeature='").append(numOfFeature).append('\'');
         sb.append(", pk_column='").append(pk_column).append('\'');
         sb.append(", Containers=").append(Containers);
         sb.append(']');
         return sb.toString();
-    }
-
-    public static RandomDataGenerator getRandom() {
-        return RFI;
     }
 }

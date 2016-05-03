@@ -1,0 +1,22 @@
+<head>
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="plotlyData.js"></script>
+</head>
+<body>
+<!-- Plotly chart will be drawn inside this DIV -->
+<div id="myDiv" style="width:100%;height:100%"></div>
+<script>
+    /* JAVASCRIPT CODE GOES HERE */
+    var layout = {
+        margin: {
+            l: 0,
+            r: 0,
+            b: 0,
+            t: 0
+        }
+    };
+    //alert(myData);
+    Plotly.newPlot('myDiv', myData, layout);
+</script>
+</body>

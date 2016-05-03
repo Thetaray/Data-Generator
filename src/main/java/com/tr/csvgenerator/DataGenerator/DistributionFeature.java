@@ -19,25 +19,25 @@ public class DistributionFeature implements Feature // extends AbstractFeature
     }
 
 
-    public String getModel() {
-        return Model;
+    public DistributionFeature(String model, List<Double> Params, Long seed) {
+        this.Model = model;
+        this.Params = Params;
     }
 
-    public List<Double> getParams() {
-        return Params;
+    public String getModel() {
+        return Model;
     }
 
     public void setModel(String model) {
         Model = model;
     }
 
-    public void setParams(List<Double> params) {
-        Params = params;
+    public List<Double> getParams() {
+        return Params;
     }
 
-    public DistributionFeature(String model, List<Double> Params, Long seed) {
-        this.Model = model;
-        this.Params = Params;
+    public void setParams(List<Double> params) {
+        Params = params;
     }
 
     @Override
@@ -45,12 +45,20 @@ public class DistributionFeature implements Feature // extends AbstractFeature
         RandomDataGenerator r = Data.getRandom();
         Double res = 0.0;
         switch (Model.toLowerCase()) {
-            case "normal":
-                res = r.nextGaussian(Params.get(0), Params.get(1));
+            case "normal": {
+                if (Params.size() > 2)
+                    res = (r.nextGaussian(Params.get(0), Params.get(1))) * (Params.get(3) - Params.get(2)) + Params.get(2);
+                else
+                    res = r.nextGaussian(Params.get(0), Params.get(1));
                 break;
-            case "beta":
-                res = r.nextBeta(Params.get(0), Params.get(1));
+            }
+            case "beta": {
+                if (Params.size() > 2)
+                    res = (r.nextBeta(Params.get(0), Params.get(1))) * (Params.get(3) - Params.get(2)) + Params.get(2);
+                else
+                    res = r.nextBeta(Params.get(0), Params.get(1));
                 break;
+            }
             case "cauchy":
                 res = r.nextCauchy(Params.get(0), Params.get(1));
                 break;
@@ -78,9 +86,31 @@ public class DistributionFeature implements Feature // extends AbstractFeature
             case "weibull":
                 res = r.nextWeibull(Params.get(0), Params.get(1));
                 break;
-            case "uniform":
-                res = r.nextUniform(Params.get(0), Params.get(1));
+            case "uniform": {
+                if (Params.get(0).equals(Params.get(1)))
+                    res = Params.get(0);
+                else
+                    res = r.nextUniform(Params.get(0), Params.get(1));
                 break;
+            }
+//            case "cor":
+//            {
+//                // Create and seed a RandomGenerator (could use any of the generators in the random package here)
+//                RandomGenerator rg = new JDKRandomGenerator();
+//                rg.setSeed(17399225432l);  // Fixed seed means same results every time
+//
+//                // Create a GassianRandomGenerator using rg as its source of randomness
+//                GaussianRandomGenerator rawGenerator = new GaussianRandomGenerator(rg);
+//
+//                // Create a CorrelatedRandomVectorGenerator using rawGenerator for the components
+//                double mean = 0.5;
+//                RealMatrixFormat covariance = new RealMatrixFormat();
+//                CorrelatedRandomVectorGenerator generator =
+//                        new CorrelatedRandomVectorGenerator(mean, covariance, 1.0e-12 * covariance.getNorm(), rawGenerator);
+//
+//                // Use the generator to generate correlated vectors
+//                double[] randomVector = generator.nextVector();
+//            }
             //case "pascal":
             //   res = r.nextPascal(Params.get(0).intValue(),Params.get(1));
 //            case "SecureHexString":
