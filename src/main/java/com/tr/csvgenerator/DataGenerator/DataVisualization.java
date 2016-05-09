@@ -296,33 +296,21 @@ public class DataVisualization implements DataVisualizationService {
             for (Container c : data.getContainers()) {
                 if (c.getLabel().equals(keys[i])) {
                     for (int j = 0; j < c.getNumberOfElements(); j++, elementNum++) {
-                        if (c.hasNext()) {
+                        if (c.hasNext())
                             element = c.Next();
-                        }
-                        //finData[i][0][elementNum] = (double) element.get(x);
-                        plotlyclustr[i].x[elementNum] = (double) element.get(x);
-                        //finData[i][1][elementNum] = (double) element.get(y);
-                        plotlyclustr[i].y[elementNum] = (double) element.get(y);
+                        else break;
 
-                        if (z > 0) {
-                            //finData[i][2][elementNum] = (double) element.get(z);
+                        if (element.size() > 0)
+                            plotlyclustr[i].x[elementNum] = (double) element.get(x);
+                        if (element.size() > 1)
+                            plotlyclustr[i].y[elementNum] = (double) element.get(y);
+                        if (element.size() > 2 && z > 0)
                             plotlyclustr[i].z[elementNum] = (double) element.get(z);
-
-                        }
                     }
                 }
             }
         }
 
-        //try write finData to json file
-        //ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        //String jsonOfMyData = ow.writeValueAsString(finData);
-        //System.out.println(jsonOfMyData);
-        //String jsonOfMyData ="";
-
-//        PrintWriter out = new PrintWriter("/home/naor/Desktop/myData.js");
-//        out.println("var myData = "+jsonOfMyData);
-//        out.close();
 
 
         String jsonOfMyData = "[";
@@ -364,23 +352,6 @@ public class DataVisualization implements DataVisualizationService {
                 "</script>\n" +
                 "</body>");
         out.close();
-//        PlotPanel panel;
-//        if(z>0)
-//        {
-//            panel = new Plot3DPanel();
-//
-//            for (int i = 0; i < keys.length; i++)
-//                ((Plot3DPanel)panel).addScatterPlot(keys[i].toString(), finData[i][0], finData[i][1], finData[i][2]);
-//        }
-//        else
-//        {
-//            panel = new Plot2DPanel();
-//
-//            for (int i = 0; i < keys.length; i++)
-//                ((Plot2DPanel)panel).addScatterPlot(keys[i].toString(), finData[i][0], finData[i][1]);
-//        }
-//
-//        return panel;
 
     }
 

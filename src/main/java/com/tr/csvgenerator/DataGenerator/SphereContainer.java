@@ -91,58 +91,9 @@ public class SphereContainer implements Container {
         double[] vector = SphereRandom.nextVector();
 
         for (int i = 0; i < vector.length; i++)
-            res.add(i, (vector[i] + centrePoint.get(i)) * radius);
+            res.add(i, (vector[i] * radius) + centrePoint.get(i));
 
+        countSupply++;
         return res;
     }
-    //return  (List<Object>)(List<?>)Doubles.asList(SphereRandom.nextVector());
-
-//        ArrayList<Object> res = new ArrayList<>();
-//        double val=0;
-//
-//        for (int i = 0; i < centrePoint.size(); i++)
-//        {
-//            val=0;
-//            for(int j=0;j<i;j++)
-//                val+=Math.sin(Theta.get(j));
-//            val+=Math.cos(Theta.get(i));
-//
-//            res.add(i,val*radius);
-//        }
-//
-//        var theta = 2 * Math.PI * u;
-//        var phi = Math.acos(2 * v - 1);
-//        var x = x0 + (radius * Math.sin(phi) * Math.cos(theta));
-//        var y = y0 + (radius * Math.sin(phi) * Math.sin(theta));
-//        var z = z0 + (radius * Math.cos(phi));
-
-
-//        double sum = 0; //xx+yy+zz<r ==> z=sqrt(r-xx-yy)
-//        double tmp = 0;
-//        double normolized;
-//        double angle = Math.random() * Math.PI * 2;
-//        int len = centrePoint.size();
-//        while(sum>radius || sum==0)
-//        {
-//            res.clear();
-//            for (int i = 0; i < len; i++)
-//            {
-//                tmp = r.nextLong(-radius, radius);
-//                res.add(i, tmp);
-//                sum += tmp * tmp;
-//            }
-//            normolized = Math.sqrt(sum);
-//            for (int i = 0; i < len; i++)
-//                res.set(i,(double)res.get(i)/normolized);
-//
-//        }
-
-//        double x = Math.cos(angle)*radius;
-//        double y = Math.sin(angle)*radius;
-//        double z = radius - x - y;
-//        res.add(0,x);
-//        res.add(1,y);
-//        res.add(2,z);
-
-
 }

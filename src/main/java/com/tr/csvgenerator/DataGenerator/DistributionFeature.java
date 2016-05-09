@@ -54,7 +54,7 @@ public class DistributionFeature implements Feature // extends AbstractFeature
             }
             case "beta": {
                 if (Params.size() > 2)
-                    res = (r.nextBeta(Params.get(0), Params.get(1))) * (Params.get(3) - Params.get(2)) + Params.get(2);
+                    res = ((r.nextBeta(Params.get(0), Params.get(1))) * (Params.get(3) - Params.get(2))) + Params.get(2);
                 else
                     res = r.nextBeta(Params.get(0), Params.get(1));
                 break;
