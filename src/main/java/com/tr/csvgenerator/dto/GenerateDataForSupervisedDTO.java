@@ -1,15 +1,13 @@
 package com.tr.csvgenerator.dto;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by Naor Ben David on 02/03/16.
  */
 public class GenerateDataForSupervisedDTO {
 
     /* Input to the program */
+    //TODO:javax validation //@Min(15)
     Integer Total_Size;
     Integer Positive_Percent;
     Integer Rank;

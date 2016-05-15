@@ -1,4 +1,4 @@
-package com.tr.csvgenerator.DataGenerator;
+package com.tr.csvgenerator.RandomDataGenerator.Visualization;
 
 import java.util.Arrays;
 

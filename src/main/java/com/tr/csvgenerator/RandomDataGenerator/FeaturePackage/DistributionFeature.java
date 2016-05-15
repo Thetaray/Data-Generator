@@ -1,5 +1,6 @@
-package com.tr.csvgenerator.DataGenerator;
+package com.tr.csvgenerator.RandomDataGenerator.FeaturePackage;
 
+import com.tr.csvgenerator.RandomDataGenerator.Data;
 import org.apache.commons.math3.random.RandomDataGenerator;
 
 import java.util.List;
@@ -9,11 +10,11 @@ import java.util.List;
  * User: Naor Ben David
  * Mail: naor.bendaivd@thetaray.com
  */
-public class DistributionFeature implements Feature // extends AbstractFeature
+public class DistributionFeature implements Feature
 {
 
     private String Model = "";
-    private List<Double> Params;
+    private List<Double> params;
 
     public DistributionFeature() {
     }
@@ -21,7 +22,7 @@ public class DistributionFeature implements Feature // extends AbstractFeature
 
     public DistributionFeature(String model, List<Double> Params, Long seed) {
         this.Model = model;
-        this.Params = Params;
+        this.params = Params;
     }
 
     public String getModel() {
@@ -33,11 +34,11 @@ public class DistributionFeature implements Feature // extends AbstractFeature
     }
 
     public List<Double> getParams() {
-        return Params;
+        return params;
     }
 
     public void setParams(List<Double> params) {
-        Params = params;
+        this.params = params;
     }
 
     @Override
@@ -46,33 +47,33 @@ public class DistributionFeature implements Feature // extends AbstractFeature
         Double res = 0.0;
         switch (Model.toLowerCase()) {
             case "normal": {
-                if (Params.size() > 2)
-                    res = (r.nextGaussian(Params.get(0), Params.get(1))) * (Params.get(3) - Params.get(2)) + Params.get(2);
+                if (params.size() > 2)
+                    res = (r.nextGaussian(params.get(0), params.get(1))) * (params.get(3) - params.get(2)) + params.get(2);
                 else
-                    res = r.nextGaussian(Params.get(0), Params.get(1));
+                    res = r.nextGaussian(params.get(0), params.get(1));
                 break;
             }
             case "beta": {
-                if (Params.size() > 2)
-                    res = ((r.nextBeta(Params.get(0), Params.get(1))) * (Params.get(3) - Params.get(2))) + Params.get(2);
+                if (params.size() > 2)
+                    res = ((r.nextBeta(params.get(0), params.get(1))) * (params.get(3) - params.get(2))) + params.get(2);
                 else
-                    res = r.nextBeta(Params.get(0), Params.get(1));
+                    res = r.nextBeta(params.get(0), params.get(1));
                 break;
             }
             case "cauchy":
-                res = r.nextCauchy(Params.get(0), Params.get(1));
+                res = r.nextCauchy(params.get(0), params.get(1));
                 break;
             case "chisquared":
-                res = r.nextChiSquare(Params.get(0));
+                res = r.nextChiSquare(params.get(0));
                 break;
             case "exponential":
-                res = r.nextExponential(Params.get(0));
+                res = r.nextExponential(params.get(0));
                 break;
             case "fisher-senedecor":
-                res = r.nextF(Params.get(0), Params.get(1));
+                res = r.nextF(params.get(0), params.get(1));
                 break;
             case "gamma":
-                res = r.nextGamma(Params.get(0), Params.get(1));
+                res = r.nextGamma(params.get(0), params.get(1));
                 break;
 //            case "levy":
 //                return null;
@@ -81,16 +82,16 @@ public class DistributionFeature implements Feature // extends AbstractFeature
 //            case "pareto":
 //                return null;
             case "student-t":
-                res = r.nextT(Params.get(0));
+                res = r.nextT(params.get(0));
                 break;
             case "weibull":
-                res = r.nextWeibull(Params.get(0), Params.get(1));
+                res = r.nextWeibull(params.get(0), params.get(1));
                 break;
             case "uniform": {
-                if (Params.get(0).equals(Params.get(1)))
-                    res = Params.get(0);
+                if (params.get(0).equals(params.get(1)))
+                    res = params.get(0);
                 else
-                    res = r.nextUniform(Params.get(0), Params.get(1));
+                    res = r.nextUniform(params.get(0), params.get(1));
                 break;
             }
 //            case "cor":
@@ -112,11 +113,11 @@ public class DistributionFeature implements Feature // extends AbstractFeature
 //                double[] randomVector = generator.nextVector();
 //            }
             //case "pascal":
-            //   res = r.nextPascal(Params.get(0).intValue(),Params.get(1));
-//            case "SecureHexString":
-//                return r.nextSecureHexString(Params.get(0).intValue());
-//            case "HexString":
-//                return r.nextHexString(Params.get(0).intValue());
+            //   res = r.nextPascal(params.get(0).intValue(),params.get(1));
+            case "SecureHexString":
+                return r.nextSecureHexString(params.get(0).intValue());
+            case "HexString":
+                return r.nextHexString(params.get(0).intValue());
             default:
                 throw new Exception("ERROR: The Model: " + Model + " Doesn't Exist");
         }
@@ -129,7 +130,7 @@ public class DistributionFeature implements Feature // extends AbstractFeature
 
         final StringBuffer sb = new StringBuffer("DistributionFeature{");
         sb.append(", Model='").append(Model).append('\'');
-        sb.append(", Params=").append(Params);
+        sb.append(", params=").append(params);
         sb.append(']');
         return sb.toString();
     }

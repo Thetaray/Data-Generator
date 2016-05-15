@@ -1,5 +1,6 @@
-package com.tr.csvgenerator.DataGenerator;
+package com.tr.csvgenerator.RandomDataGenerator.ContainerPackage;
 
+import com.tr.csvgenerator.RandomDataGenerator.Data;
 import org.apache.commons.math3.random.RandomDataGenerator;
 import org.apache.commons.math3.random.UnitSphereRandomVectorGenerator;
 

@@ -1,4 +1,6 @@
-package com.tr.csvgenerator.DataGenerator;
+package com.tr.csvgenerator.RandomDataGenerator.Visualization;
+
+import com.tr.csvgenerator.RandomDataGenerator.Data;
 
 /**
  * Created by IntelliJ IDEA.

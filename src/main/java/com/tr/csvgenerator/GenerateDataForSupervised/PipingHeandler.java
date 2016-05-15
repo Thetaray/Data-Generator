@@ -37,7 +37,7 @@ public class PipingHeandler {
 
         /* Sorting of array list using Collections.sort*/
         Collections.sort(res);
-        //// TODO: 10/03/16 HANDEL THE CASE OF [2,12:20,2,12,2,12] (DUPLICATED VALUES)
+        //// TODO: 10/03/16 HANDEL THE CASE OF DUPLICATED VALUES e.g: [2,12:20,2,12,2,12]
         return res;
     }
 

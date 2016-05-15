@@ -1,6 +1,8 @@
-package com.tr.csvgenerator.DataGenerator;
+package com.tr.csvgenerator.RandomDataGenerator.Visualization;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tr.csvgenerator.RandomDataGenerator.ContainerPackage.Container;
+import com.tr.csvgenerator.RandomDataGenerator.Data;
 import org.math.plot.Plot2DPanel;
 import org.springframework.stereotype.Service;
 
@@ -217,43 +219,6 @@ public class DataVisualization implements DataVisualizationService {
         frame.setVisible(true);
     }
 
-    //@Test
-    //public void testDrawData() throws Exception {
-    //public static void main(String[] args) throws Exception {
-
-    //    Data d;
-
-//        long seed = 1;
-//
-//
-//        DistributionFeature x1 = new DistributionFeature("uniform", new ArrayList<Double>(Arrays.asList(100.0, 300.0)), seed);
-//        DistributionFeature y1 = new DistributionFeature("uniform", new ArrayList<Double>(Arrays.asList(200.0, 400.0)), seed);
-//
-//        RegularContainer c1 = new RegularContainer(new ArrayList<Feature>(Arrays.asList(x1, y1)), 700);
-//        c1.setLabelColumn(2);
-//        c1.setLabel("0");
-//
-//
-//        DistributionFeature x2 = new DistributionFeature("uniform", new ArrayList<Double>(Arrays.asList(300.0, 500.0)), seed);
-//        DistributionFeature y2 = new DistributionFeature("uniform", new ArrayList<Double>(Arrays.asList(400.0, 600.0)), seed);
-//
-//
-//        RegularContainer c2 = new RegularContainer(new ArrayList<Feature>(Arrays.asList(x2, y2)), 1000);
-//        c2.setLabelColumn(2);
-//        c2.setLabel("2");
-//
-//        Data d = new Data("/home/naor/Desktop/test1", seed, 2, 1, new ArrayList<Container>(Arrays.asList(c1,c2)));
-
-
-//        d = jsonToObject();
-//        JFrame frame = new JFrame("a plot panel");
-//        frame.setContentPane(drawData(d,0,1,2));
-//        frame.setSize(300, 300);
-//        frame.setLocationRelativeTo(null);
-//        frame.setVisible(true);
-
-    //}
-
     @Override
     public void drawData(Data data, int x, int y, int z) throws Exception {
 
@@ -354,6 +319,44 @@ public class DataVisualization implements DataVisualizationService {
         out.close();
 
     }
+
+
+    //@Test
+    //public void testDrawData() throws Exception {
+    //public static void main(String[] args) throws Exception {
+
+    //    Data d;
+
+//        long seed = 1;
+//
+//
+//        DistributionFeature x1 = new DistributionFeature("uniform", new ArrayList<Double>(Arrays.asList(100.0, 300.0)), seed);
+//        DistributionFeature y1 = new DistributionFeature("uniform", new ArrayList<Double>(Arrays.asList(200.0, 400.0)), seed);
+//
+//        RegularContainer c1 = new RegularContainer(new ArrayList<Feature>(Arrays.asList(x1, y1)), 700);
+//        c1.setLabelColumn(2);
+//        c1.setLabel("0");
+//
+//
+//        DistributionFeature x2 = new DistributionFeature("uniform", new ArrayList<Double>(Arrays.asList(300.0, 500.0)), seed);
+//        DistributionFeature y2 = new DistributionFeature("uniform", new ArrayList<Double>(Arrays.asList(400.0, 600.0)), seed);
+//
+//
+//        RegularContainer c2 = new RegularContainer(new ArrayList<Feature>(Arrays.asList(x2, y2)), 1000);
+//        c2.setLabelColumn(2);
+//        c2.setLabel("2");
+//
+//        Data d = new Data("/home/naor/Desktop/test1", seed, 2, 1, new ArrayList<Container>(Arrays.asList(c1,c2)));
+
+
+//        d = jsonToObject();
+//        JFrame frame = new JFrame("a plot panel");
+//        frame.setContentPane(drawData(d,0,1,2));
+//        frame.setSize(300, 300);
+//        frame.setLocationRelativeTo(null);
+//        frame.setVisible(true);
+
+    //}
 
 
 }

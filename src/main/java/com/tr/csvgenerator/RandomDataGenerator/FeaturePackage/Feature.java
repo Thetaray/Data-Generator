@@ -1,4 +1,4 @@
-package com.tr.csvgenerator.DataGenerator;
+package com.tr.csvgenerator.RandomDataGenerator.FeaturePackage;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 

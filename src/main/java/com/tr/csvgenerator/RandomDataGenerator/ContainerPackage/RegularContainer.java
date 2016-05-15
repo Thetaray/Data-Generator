@@ -1,4 +1,6 @@
-package com.tr.csvgenerator.DataGenerator;
+package com.tr.csvgenerator.RandomDataGenerator.ContainerPackage;
+
+import com.tr.csvgenerator.RandomDataGenerator.FeaturePackage.Feature;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,12 +14,11 @@ public class RegularContainer implements Container
 {
 
     /*      User variable     */
-    private Integer numberOfElements;
-
-    private String label;
-
+    private Integer numberOfElements = 100;
     private Integer labelColumn;
+    private String label;
     private List<Feature> Features;
+
     /*      Internal variable     */
     private int countSupply = 0;
 
@@ -29,22 +30,13 @@ public class RegularContainer implements Container
     public RegularContainer() {
     }
 
-    public void setLabel(String label) {
-        this.label = label;
-    }
-
-    public RegularContainer setLabelColumn(Integer labelColumn) {
-        this.labelColumn = labelColumn;
-        return this;
+    @Override
+    public Integer getNumberOfElements() {
+        return numberOfElements;
     }
 
     public void setNumberOfElements(Integer numberOfElements) {
         this.numberOfElements = numberOfElements;
-    }
-
-    @Override
-    public Integer getNumberOfElements() {
-        return numberOfElements;
     }
 
     public List<Feature> getFeatures() {
@@ -59,8 +51,17 @@ public class RegularContainer implements Container
         return label;
     }
 
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
     public Integer getLabelColumn() {
         return labelColumn;
+    }
+
+    public RegularContainer setLabelColumn(Integer labelColumn) {
+        this.labelColumn = labelColumn;
+        return this;
     }
 
     @Override

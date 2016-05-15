@@ -1,4 +1,4 @@
-package com.tr.csvgenerator.DataGenerator;
+package com.tr.csvgenerator.RandomDataGenerator;
 
 /**
  * Created by IntelliJ IDEA.
@@ -7,9 +7,7 @@ package com.tr.csvgenerator.DataGenerator;
  * Date: 4/17/16
  * Time: 7:33 PM
  */
+
 public interface DataGenService {
-
     String gen(Data d) throws InterruptedException ;
-
-
 }

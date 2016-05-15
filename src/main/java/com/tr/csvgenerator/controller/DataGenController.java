@@ -1,8 +1,8 @@
 package com.tr.csvgenerator.controller;
 
-import com.tr.csvgenerator.DataGenerator.Data;
-import com.tr.csvgenerator.DataGenerator.DataGenService;
-import com.tr.csvgenerator.DataGenerator.DataVisualizationService;
+import com.tr.csvgenerator.RandomDataGenerator.Data;
+import com.tr.csvgenerator.RandomDataGenerator.DataGenService;
+import com.tr.csvgenerator.RandomDataGenerator.Visualization.DataVisualizationService;
 import com.tr.csvgenerator.common.TrApiResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;

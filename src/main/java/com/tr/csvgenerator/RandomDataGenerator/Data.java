@@ -1,6 +1,7 @@
-package com.tr.csvgenerator.DataGenerator;
+package com.tr.csvgenerator.RandomDataGenerator;
 
 
+import com.tr.csvgenerator.RandomDataGenerator.ContainerPackage.Container;
 import org.apache.commons.math3.random.RandomDataGenerator;
 
 import java.io.File;
@@ -19,23 +20,25 @@ public class Data {
 
 
     private static RandomDataGenerator RFI = null;
+
     /*  User Input  */
+    private Long seed;
+    private Integer shuffle = 0; //0 - no shuffle, 1 - cycle shuffle, 2 - random
     private String outputFile;
-    private long seed;
-    private int pk_column = 0;
+    private Integer pkColumn = 0;
     private List<Container> Containers;
-    private Integer Shuffle = 0; //0 - no shuffle, 1 - cycle shuffle, 2 - random
+
     /*  Internal use    */
     private int pk = 1;
     private int lastIndex = 0;
 
-    public Data(String outputPath, long seed, int NumOfFeature, int pk_column, ArrayList<Container> containers){
+    public Data(String outputPath, long seed, int pk_column, ArrayList<Container> containers) {
 
         initDefaultValues();
         this.seed = seed;
         Containers = containers;
         this.outputFile = outputPath;
-        this.pk_column = pk_column;
+        this.pkColumn = pk_column;
     }
 
     public Data() {
@@ -88,19 +91,19 @@ public class Data {
     }
 
     public Integer getShuffle() {
-        return Shuffle;
+        return shuffle;
     }
 
     public void setShuffle(Integer shuffle) {
-        Shuffle = shuffle;
+        this.shuffle = shuffle;
     }
 
-    public int getPk_column() {
-        return pk_column;
+    public int getPkColumn() {
+        return pkColumn;
     }
 
-    public void setPk_column(int pk_column) {
-        this.pk_column = pk_column;
+    public void setPkColumn(int pkColumn) {
+        this.pkColumn = pkColumn;
     }
 
     public boolean hasNext() {
@@ -120,18 +123,18 @@ public class Data {
         /*  set the Label and the PK column */
         String label = Containers.get(indexOfContainer).getLabel();
         Integer labelColumn = Containers.get(indexOfContainer).getLabelColumn();
-        if(label != null)
+        if (label != null && labelColumn != null)
         {
             if(labelColumn > 0 && labelColumn <= res.size()+1)
             {
-                if (labelColumn < pk_column)
+                if (labelColumn < pkColumn)
                 {
                     res.add(labelColumn, label);
-                    res.add(pk_column, pk);
+                    res.add(pkColumn, pk);
                 }
                 else
                 {
-                    res.add(pk_column, pk);
+                    res.add(pkColumn, pk);
                     res.add(labelColumn, label);
                 }
             }
@@ -139,7 +142,7 @@ public class Data {
 
         }
         else
-            res.add(pk_column,pk);
+            res.add(pkColumn, pk);
 
 
         /*  Remove container if we take all the elements from it*/
@@ -172,7 +175,7 @@ public class Data {
         final StringBuffer sb = new StringBuffer("Data{");
         sb.append("outputFile='").append(outputFile).append('\'');
         sb.append(", seed='").append(seed).append('\'');
-        sb.append(", pk_column='").append(pk_column).append('\'');
+        sb.append(", pkColumn='").append(pkColumn).append('\'');
         sb.append(", Containers=").append(Containers);
         sb.append(']');
         return sb.toString();

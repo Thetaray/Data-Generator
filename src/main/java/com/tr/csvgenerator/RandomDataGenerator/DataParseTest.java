@@ -1,7 +1,9 @@
-package com.tr.csvgenerator.DataGenerator;
+package com.tr.csvgenerator.RandomDataGenerator;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tr.csvgenerator.RandomDataGenerator.ContainerPackage.RegularContainer;
+import com.tr.csvgenerator.RandomDataGenerator.FeaturePackage.DistributionFeature;
 import com.tr.csvgenerator.dto.GenerateDataForSupervisedDTO;
 import org.junit.Test;
 
@@ -23,20 +25,21 @@ public class DataParseTest {
         String value;
 
         long seed = 1;
-        DistributionFeature f1 = new DistributionFeature("normal",new ArrayList<Double>(Arrays.asList(0.0,0.2)),seed);
-        DistributionFeature f2 = new DistributionFeature("normal",new ArrayList<Double>(Arrays.asList(0.5,0.5)),seed);
+        DistributionFeature f1 = new DistributionFeature("normal", new ArrayList<>(Arrays.asList(0.0, 0.2)), seed);
+        DistributionFeature f2 = new DistributionFeature("normal", new ArrayList<>(Arrays.asList(0.5, 0.5)), seed);
 
         value = mapper.writeValueAsString(f1);
         System.out.println(value);
 
-        RegularContainer c = new RegularContainer(new ArrayList<Feature>(Arrays.asList(f1,f2)),1000);
+        RegularContainer c = new RegularContainer(new ArrayList<>(Arrays.asList(f1, f2)), 1000);
                 c.setLabelColumn(2);
                 c.setLabel("0");
+
 
         value = mapper.writeValueAsString(c);
         System.out.println(value);
 
-        Data d = new Data("/home/naor/Desktop/test1", seed, 2, 1, new ArrayList<Container>(Arrays.asList(c)));
+        Data d = new Data("/home/naor/Desktop/test1", seed, 2, new ArrayList<>(Arrays.asList(c)));
 
 
 

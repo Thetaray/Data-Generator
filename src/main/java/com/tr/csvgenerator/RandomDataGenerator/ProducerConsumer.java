@@ -1,11 +1,14 @@
-package com.tr.csvgenerator.DataGenerator;
+package com.tr.csvgenerator.RandomDataGenerator;
 
 import au.com.bytecode.opencsv.CSVWriter;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
 import java.util.concurrent.*;
 
 /**
@@ -130,7 +133,7 @@ public class ProducerConsumer {
                     i++;
                     while(insert!=true)
                     {
-                        //TODO: clculate buffer_Size
+                        //TODO: calculate buffer_Size, write rate
                         if (buffer.size() < 1000) {
                             //buffer.add(new String(i + ""));
                             buffer.add(dataToGen.Next());

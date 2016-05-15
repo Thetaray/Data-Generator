@@ -1,4 +1,4 @@
-package com.tr.csvgenerator.DataGenerator;
+package com.tr.csvgenerator.RandomDataGenerator.ContainerPackage;
 
 import com.google.common.primitives.Doubles;
 import org.apache.commons.math3.random.SobolSequenceGenerator;
