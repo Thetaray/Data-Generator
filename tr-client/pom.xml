@@ -42,7 +42,7 @@
                 <executions>
                     <!-- Run shade goal on package phase -->
                     <execution>
-                        <phase>package</phase>
+                        <phase>install</phase>
                         <goals>
                             <goal>shade</goal>
                         </goals>

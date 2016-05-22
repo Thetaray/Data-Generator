@@ -30,6 +30,7 @@ public class Data {
     /*  Internal use    */
     private int pk = 1;
     private int lastIndex = 0;
+    private double[] intervalSelection;
 
     public Data(String outputPath, long seed, int pk_column, ArrayList<Container> containers) {
 
@@ -137,9 +138,10 @@ public class Data {
 
 
         /*  Remove container if we take all the elements from it*/
-        if (!Containers.get(indexOfContainer).hasNext())
+        if (!Containers.get(indexOfContainer).hasNext()) {
             Containers.remove(indexOfContainer);
-
+            calculateIntervalSelection();
+        }
         pk++;
 
         return res;
@@ -156,7 +158,37 @@ public class Data {
         }
         if (shuffle == 2) {
             return RFI.nextInt(0, getContainers().size() - 1);
+        }
+        if (shuffle == 3) {
+            if (intervalSelection == null)
+                calculateIntervalSelection();
+
+            double l = RFI.nextUniform(0.0, 1.0);
+            for (int i = 0; i < intervalSelection.length; i++)
+                if (l < intervalSelection[i])
+                    return i;
         } else throw new Exception("ERROR: bad shuffle number ");
+
+        return -1;
+    }
+
+    private int getTotalElementSize() {
+        int res = 0;
+        for (Container c : getContainers()) {
+            res += c.getNumberOfElements();
+        }
+        return res;
+    }
+
+    private void calculateIntervalSelection() {
+        int containersSize = getContainers().size();
+        intervalSelection = new double[containersSize];
+        int totalElement = getTotalElementSize();
+        double sum = 0;
+        for (int i = 0; i < containersSize; i++) {
+            sum += (double) getContainers().get(i).getNumberOfElements() / totalElement;
+            intervalSelection[i] = sum;
+        }
     }
 
     @Override
