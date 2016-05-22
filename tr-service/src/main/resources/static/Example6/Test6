@@ -1,0 +1,59 @@
+Test 6
+=========
+ {
+"seed":6,
+"shuffle":2,
+"pkColumn":0,
+"containers":
+[
+    {
+        "@type":".RegularContainer",
+        "numberOfElements":1000,
+        "label": "0",
+        "labelColumn": 1,
+        "features":
+        [
+            {
+                "@type":".DistributionFeature",
+                "model":"beta",
+                "params":[1,2,0,100]
+            },
+            {
+                "@type":".DistributionFeature",
+                "model":"beta",
+                "params":[1,2,0,100]
+            }
+            ,
+            {
+                "@type":".DistributionFeature",
+                "model":"beta",
+                "params":[1,2,0,100]
+            }
+        ]
+    },
+     {
+        "@type":".RegularContainer",
+        "numberOfElements":200,
+        "label": "2",
+        "labelColumn": 1,
+        "features":
+        [            
+            {
+                "@type":".DistributionFeature",
+               	"model":"beta",
+                "params":[3,1,100,0]
+            },{
+                "@type":".DistributionFeature",
+                "model":"beta",
+                "params":[3,1,100,0]
+            },
+            {
+                "@type":".DistributionFeature",
+                "model":"beta",
+                "params":[3,1,100,0]
+            }
+        ]
+    }
+
+]
+}

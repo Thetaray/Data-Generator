@@ -1,0 +1,25 @@
+Test 5
+=========
+ {
+"seed":5,
+"shuffle":2,
+"pkColumn":0,
+"containers":
+[
+    {
+        "@type":".RegularContainer",
+        "numberOfElements":2000,
+        "features":
+        [
+            {
+                "@type":".DistributionFeature",
+                "model":"normal",
+                "params":[0,0.2]
+            },
+            {
+                "@type":".DateFeature"
+            }
+        ]
+    }
+]
+}

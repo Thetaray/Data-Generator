@@ -1,0 +1,20 @@
+Test8
+============
+ 
+ {
+"numOfFeature":0,
+"shuffle":2,
+"pkColumn":0,
+"containers":
+[
+    {
+        "@class":"com.tr.csvgenerator.DataGenerator.SobolContainr",
+        "numberOfElements":4000,
+        "label": "0",
+        "radius":100000,
+        "labelColumn": 1,
+        "withFill":false,
+        "centrePoint":[0,0,0]
+    }
+]
+}
