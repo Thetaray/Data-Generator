@@ -1,7 +1,7 @@
 package com.tr.csvgenerator.RandomDataGenerator.Visualization;
 
-import RandomDataGeneratorObject.ContainerPackage.Container;
-import RandomDataGeneratorObject.Data;
+import CommonObjects.ContainerPackage.Container;
+import CommonObjects.Data;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.math.plot.Plot2DPanel;
 import org.springframework.stereotype.Service;
@@ -286,15 +286,20 @@ public class DataVisualization implements DataVisualizationService {
                 jsonOfMyData += plotlyclustr[i] + "]";
         }
 
-
-        File f = new File((DataVisualization.class.getResource("../../../../static/")).getPath() + "LastRun/plotlyData.js");
-        f.getParentFile().mkdirs();
-        PrintWriter out = new PrintWriter(f);
+        //File file2 = new File("resources/static/LastRun/plotlyData.js");
+        File file = new File("tr-service/target/classes/static/LastRun/plotlyData.js");
+        if (file.exists())
+            file.delete();
+        file.getParentFile().mkdirs();
+        file.createNewFile();
+        file.setWritable(true);
+        PrintWriter out = new PrintWriter(file);
         out.println("var myData = " + jsonOfMyData);
         out.close();
 
-        f = new File((DataVisualization.class.getResource("../../../../static/")).getPath() + "LastRun/index.html");
-        out = new PrintWriter(f);
+        file = new File("target/classes/static/LastRun/index.html");
+        //String absolutePath = file.getAbsolutePath();
+        out = new PrintWriter(file);
         out.println("<head>\n" +
                 "<!-- Plotly.js -->\n" +
                 "<script src=\"https://cdn.plot.ly/plotly-latest.min.js\"></script>\n" +
@@ -318,44 +323,4 @@ public class DataVisualization implements DataVisualizationService {
         out.close();
 
     }
-
-
-    //@Test
-    //public void testDrawData() throws Exception {
-    //public static void main(String[] args) throws Exception {
-
-    //    Data d;
-
-//        long seed = 1;
-//
-//
-//        DistributionFeature x1 = new DistributionFeature("uniform", new ArrayList<Double>(Arrays.asList(100.0, 300.0)), seed);
-//        DistributionFeature y1 = new DistributionFeature("uniform", new ArrayList<Double>(Arrays.asList(200.0, 400.0)), seed);
-//
-//        RegularContainer c1 = new RegularContainer(new ArrayList<Feature>(Arrays.asList(x1, y1)), 700);
-//        c1.setLabelColumn(2);
-//        c1.setLabel("0");
-//
-//
-//        DistributionFeature x2 = new DistributionFeature("uniform", new ArrayList<Double>(Arrays.asList(300.0, 500.0)), seed);
-//        DistributionFeature y2 = new DistributionFeature("uniform", new ArrayList<Double>(Arrays.asList(400.0, 600.0)), seed);
-//
-//
-//        RegularContainer c2 = new RegularContainer(new ArrayList<Feature>(Arrays.asList(x2, y2)), 1000);
-//        c2.setLabelColumn(2);
-//        c2.setLabel("2");
-//
-//        Data d = new Data("/home/naor/Desktop/test1", seed, 2, 1, new ArrayList<Container>(Arrays.asList(c1,c2)));
-
-
-//        d = jsonToObject();
-//        JFrame frame = new JFrame("a plot panel");
-//        frame.setContentPane(drawData(d,0,1,2));
-//        frame.setSize(300, 300);
-//        frame.setLocationRelativeTo(null);
-//        frame.setVisible(true);
-
-    //}
-
-
 }

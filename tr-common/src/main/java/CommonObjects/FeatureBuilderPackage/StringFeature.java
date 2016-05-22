@@ -1,4 +1,4 @@
-package RandomDataGeneratorObject.FeaturePackage;
+package CommonObjects.FeatureBuilderPackage;
 /**
  * Created by IntelliJ IDEA.
  * User: Naor Ben David
@@ -6,7 +6,7 @@ package RandomDataGeneratorObject.FeaturePackage;
  * Date: 15/5/16
  */
 
-import RandomDataGeneratorObject.Data;
+import CommonObjects.Data;
 
 public class StringFeature implements Feature {
 

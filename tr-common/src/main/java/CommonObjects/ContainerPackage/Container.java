@@ -1,4 +1,4 @@
-package RandomDataGeneratorObject.ContainerPackage;
+package CommonObjects.ContainerPackage;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 

@@ -1,8 +1,8 @@
 package com.tr.csvgenerator.RandomDataGenerator;
 
-import RandomDataGeneratorObject.ContainerPackage.RegularContainer;
-import RandomDataGeneratorObject.Data;
-import RandomDataGeneratorObject.FeaturePackage.DistributionFeature;
+import CommonObjects.ContainerPackage.RegularContainer;
+import CommonObjects.Data;
+import CommonObjects.FeatureBuilderPackage.DistributionFeature;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tr.csvgenerator.dto.GenerateDataForSupervisedDTO;

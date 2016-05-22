@@ -1,6 +1,6 @@
-package RandomDataGeneratorObject.ContainerPackage;
+package CommonObjects.ContainerPackage;
 
-import RandomDataGeneratorObject.Data;
+import CommonObjects.Data;
 import org.apache.commons.math3.random.RandomDataGenerator;
 import org.apache.commons.math3.random.UnitSphereRandomVectorGenerator;
 
@@ -64,6 +64,10 @@ public class SphereContainer implements Container {
 
     public Integer getLabelColumn() {
         return labelColumn;
+    }
+
+    public void setLabelColumn(Integer labelColumn) {
+        this.labelColumn = labelColumn;
     }
 
     @Override

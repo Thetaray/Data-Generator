@@ -1,6 +1,6 @@
-package RandomDataGeneratorObject.ContainerPackage;
+package CommonObjects.ContainerPackage;
 
-import RandomDataGeneratorObject.FeaturePackage.Feature;
+import CommonObjects.FeatureBuilderPackage.Feature;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +20,12 @@ public class RegularContainer implements Container {
 
     /*      Internal variable     */
     private int countSupply = 0;
+
+    public RegularContainer(String label, Integer labelColumn, Integer numberOfElements) {
+        this.label = label;
+        this.labelColumn = labelColumn;
+        this.numberOfElements = numberOfElements;
+    }
 
     public RegularContainer(ArrayList<Feature> features, int numberOfElements) {
         Features = features;

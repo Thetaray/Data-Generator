@@ -1,7 +1,7 @@
 package com.tr.csvgenerator.RandomDataGenerator.Visualization;
 
 
-import RandomDataGeneratorObject.Data;
+import CommonObjects.Data;
 
 /**
  * Created by IntelliJ IDEA.

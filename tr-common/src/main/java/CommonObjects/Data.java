@@ -1,6 +1,6 @@
-package RandomDataGeneratorObject;
+package CommonObjects;
 
-import RandomDataGeneratorObject.ContainerPackage.Container;
+import CommonObjects.ContainerPackage.Container;
 import org.apache.commons.math3.random.RandomDataGenerator;
 
 import java.io.File;
@@ -28,7 +28,7 @@ public class Data {
     private List<Container> Containers;
 
     /*  Internal use    */
-    private int pk = 1;
+    private int pkCounter = 1;
     private int lastIndex = 0;
     private double[] intervalSelection;
 
@@ -125,16 +125,16 @@ public class Data {
         if (label != null && labelColumn != null) {
             if (labelColumn > 0 && labelColumn <= res.size() + 1) {
                 if (labelColumn < pkColumn) {
-                    res.add(labelColumn, label);
-                    res.add(pkColumn, pk);
+                    res.add(labelColumn - 1, label);
+                    res.add(pkColumn - 1, pkCounter);
                 } else {
-                    res.add(pkColumn, pk);
-                    res.add(labelColumn, label);
+                    res.add(pkColumn - 1, pkCounter);
+                    res.add(labelColumn - 1, label);
                 }
             } else throw new Exception("ERROR: label column un legal");
 
         } else
-            res.add(pkColumn, pk);
+            res.add(pkColumn - 1, pkCounter);
 
 
         /*  Remove container if we take all the elements from it*/
@@ -142,7 +142,7 @@ public class Data {
             Containers.remove(indexOfContainer);
             calculateIntervalSelection();
         }
-        pk++;
+        pkCounter++;
 
         return res;
 

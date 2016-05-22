@@ -1,6 +1,6 @@
-package RandomDataGeneratorObject.FeaturePackage;
+package CommonObjects.FeatureBuilderPackage;
 
-import RandomDataGeneratorObject.Data;
+import CommonObjects.Data;
 import org.apache.commons.math3.random.RandomDataGenerator;
 
 import java.util.List;

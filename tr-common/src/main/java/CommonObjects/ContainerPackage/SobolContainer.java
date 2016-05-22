@@ -1,4 +1,4 @@
-package RandomDataGeneratorObject.ContainerPackage;
+package CommonObjects.ContainerPackage;
 
 import com.google.common.primitives.Doubles;
 import org.apache.commons.math3.random.SobolSequenceGenerator;
@@ -68,4 +68,7 @@ public class SobolContainer implements Container {
         return labelColumn;
     }
 
+    public void setLabelColumn(Integer labelColumn) {
+        this.labelColumn = labelColumn;
+    }
 }

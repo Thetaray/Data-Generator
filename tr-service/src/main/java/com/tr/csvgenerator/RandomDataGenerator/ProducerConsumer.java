@@ -1,6 +1,6 @@
 package com.tr.csvgenerator.RandomDataGenerator;
 
-import RandomDataGeneratorObject.Data;
+import CommonObjects.Data;
 import au.com.bytecode.opencsv.CSVWriter;
 
 import java.io.File;

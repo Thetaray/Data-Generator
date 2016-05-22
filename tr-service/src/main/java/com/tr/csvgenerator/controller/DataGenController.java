@@ -1,7 +1,7 @@
 package com.tr.csvgenerator.controller;
 
 
-import RandomDataGeneratorObject.Data;
+import CommonObjects.Data;
 import com.tr.csvgenerator.RandomDataGenerator.DataGenService;
 import com.tr.csvgenerator.RandomDataGenerator.Visualization.DataVisualizationService;
 import com.tr.csvgenerator.common.TrApiResponse;

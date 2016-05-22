@@ -1,4 +1,4 @@
-package RandomDataGeneratorObject.FeaturePackage;
+package CommonObjects.FeatureBuilderPackage;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 

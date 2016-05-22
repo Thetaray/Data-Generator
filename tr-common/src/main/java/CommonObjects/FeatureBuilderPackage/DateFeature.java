@@ -1,7 +1,7 @@
-package RandomDataGeneratorObject.FeaturePackage;
+package CommonObjects.FeatureBuilderPackage;
 
 
-import RandomDataGeneratorObject.Data;
+import CommonObjects.Data;
 
 import java.util.GregorianCalendar;
 
