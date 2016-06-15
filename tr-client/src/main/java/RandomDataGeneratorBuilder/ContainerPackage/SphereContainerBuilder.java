@@ -3,6 +3,8 @@ package RandomDataGeneratorBuilder.ContainerPackage;
 import CommonObjects.ContainerPackage.Container;
 import CommonObjects.ContainerPackage.SphereContainer;
 
+import java.util.ArrayList;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Naor Ben David
@@ -41,13 +43,18 @@ public class SphereContainerBuilder implements ContainerBuilder {
         return this;
     }
 
-    @Override
-    public Container build() {
-        return sphereContainer;
-    }
-
     public SphereContainerBuilder withNumberOfElements(Integer numberOfElements) {
         this.sphereContainer.setNumberOfElements(numberOfElements);
         return this;
+    }
+
+    public SphereContainerBuilder withCenterPoint(ArrayList points) {
+        this.sphereContainer.setCentrePoint(points);
+        return this;
+    }
+
+    @Override
+    public Container build() {
+        return sphereContainer;
     }
 }
