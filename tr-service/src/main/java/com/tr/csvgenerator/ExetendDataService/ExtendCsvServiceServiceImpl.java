@@ -71,9 +71,9 @@ public class ExtendCsvServiceServiceImpl implements ExtendCsvService {
         if (dto.getTotalNumberOfColumnsInNewFile() < 1 || dto.getTotalNumberOfColumnsInNewFile() > 5000) {
             errorMessage.append("Wrong number of columns");
         }
-        if (dto.getTotalNumberOfColumnsInNewFile() > dto.getTotalNumberOfRowsInNewFile()) {
+       /* if (dto.getTotalNumberOfColumnsInNewFile() > dto.getTotalNumberOfRowsInNewFile()) {
             errorMessage.append("Wrong number of rows per columns");
-        }
+        }*/
         if (dto.getPathToCsv().isEmpty()) {
             errorMessage.append("No path To Csv file as example");
         }
