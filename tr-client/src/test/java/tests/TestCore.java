@@ -1,3 +1,5 @@
+package tests;
+
 import RandomDataGeneratorBuilder.ContainerPackage.RegularContainerBuilder;
 import RandomDataGeneratorBuilder.DataBuilder;
 import RandomDataGeneratorBuilder.FeatureBuilderPackage.Distribution;
@@ -27,7 +29,7 @@ public class TestCore {
                         , new RegularContainerBuilder()
                                 .withDuplicateFetures(100, new DistributionFeatureBuilder(Distribution.NORMAL, Arrays.asList(3750.0, 500.0)))
                                 .withNumberOfElements(250))
-                .withOutputFile("/home/roman/Documents/DATAGENT/TT.csv").builderRequest();
+                .withOutputFile("~/Documents/DATAGENT/TT.csv").builderRequest();
         System.out.println(s);
     }
 
@@ -37,7 +39,7 @@ public class TestCore {
                 .withContainers(new RegularContainerBuilder()
                         .withDuplicateFetures(100, new DistributionFeatureBuilder(Distribution.NORMAL, Arrays.asList(100.0, 0.2)))
                         .withNumberOfElements(10000))
-                .withOutputFile("/home/roman/Documents/DATAGENT/TT2.csv")
+                .withOutputFile("~/Documents/DATAGENT/TT2.csv")
                 .builderRequest();
         System.out.println(s);
     }
