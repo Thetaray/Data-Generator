@@ -38,6 +38,14 @@ public class RegularContainerBuilder implements FeaturableContainer {
 
     }
 
+
+    public RegularContainerBuilder withDuplicateFetures(int numberOfDuplicateFeatures, FeatureBuilder... featureBuilder) {
+        for (int i = 0; i < numberOfDuplicateFeatures; i++) {
+            withFeatures(featureBuilder);
+        }
+        return this;
+    }
+
     public ContainerBuilder withLabel(String label) {
         this.regularContainer.setLabel(label);
         return this;

@@ -298,7 +298,11 @@ public class DataVisualization implements DataVisualizationService {
         out.close();
 
         file = new File("target/classes/static/LastRun/index.html");
-        //String absolutePath = file.getAbsolutePath();
+        if (file.exists())
+            file.delete();
+        file.getParentFile().mkdirs();
+        file.createNewFile();
+        file.setWritable(true);
         out = new PrintWriter(file);
         out.println("<head>\n" +
                 "<!-- Plotly.js -->\n" +
