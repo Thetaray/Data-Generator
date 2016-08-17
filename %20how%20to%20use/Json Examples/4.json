@@ -1,0 +1,71 @@
+{
+"seed":4,
+"shuffle":2,
+"pkColumn":1,
+"containers":
+[
+    {
+        "@type":".SphereContainer",
+        "numberOfElements":500,
+        "label": "0",
+        "radius":30,
+        "labelColumn": 1,
+        "withFill":false,
+        "centrePoint":[30,30,30]
+    },
+    {
+        "@type":".SphereContainer",
+        "numberOfElements":500,
+        "label": "0",
+        "radius":30,
+        "labelColumn": 1,
+        "withFill":false,
+        "centrePoint":[-30,30,30]
+    },
+    {
+        "@type":".SphereContainer",
+        "numberOfElements":500,
+        "label": "0",
+        "radius":30,
+        "labelColumn": 1,
+        "withFill":false,
+        "centrePoint":[-30,-30,30]
+    },   
+    {
+        "@type":".SphereContainer",
+        "numberOfElements":500,
+        "label": "0",
+        "radius":30,
+        "labelColumn": 1,
+        "withFill":false,
+        "centrePoint":[-30,-30,-30]
+    },   
+    {
+        "@type":".SphereContainer",
+        "numberOfElements":500,
+        "label": "0",
+        "radius":30,
+        "labelColumn": 1,
+        "withFill":false,
+        "centrePoint":[30,30,-30]
+    },   
+    {
+        "@type":".SphereContainer",
+        "numberOfElements":500,
+        "label": "0",
+        "radius":30,
+        "labelColumn": 1,
+        "withFill":false,
+        "centrePoint":[30,-30,30]
+    },
+    {
+        "@type":".SphereContainer",
+        "numberOfElements":100,
+        "label": "1",
+        "radius":100,
+        "labelColumn": 1,
+        "withFill":false,
+        "centrePoint":[0,0,0]
+    }
+]
+}

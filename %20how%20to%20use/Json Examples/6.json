@@ -1,0 +1,58 @@
+{
+"numOfFeature":0,
+"seed":4,
+"shuffle":2,
+"pkColumn":1,
+"containers":
+[
+    {
+        "@type":"com.tr.csvgenerator.DataGenerator.RegularContainer",
+        "numberOfElements":1000,
+        "label": "0",
+        "labelColumn": 1,
+        "features":
+        [
+            {
+                "@type":"com.tr.csvgenerator.DataGenerator.DistributionFeature",
+                "model":"beta",
+                "params":[1,2,0,100]
+            },
+            {
+                "@type":"com.tr.csvgenerator.DataGenerator.DistributionFeature",
+                "model":"beta",
+                "params":[1,2,0,100]
+            }
+            ,
+            {
+                "@type":"com.tr.csvgenerator.DataGenerator.DistributionFeature",
+                "model":"beta",
+                "params":[1,2,0,100]
+            }
+        ]
+    },
+     {
+        "@type":"com.tr.csvgenerator.DataGenerator.RegularContainer",
+        "numberOfElements":200,
+        "label": "2",
+        "labelColumn": 0,
+        "features":
+        [           
+            {
+                "@type":"com.tr.csvgenerator.DataGenerator.DistributionFeature",
+                "model":"beta",
+                "params":[3,1,100,0]
+            },{
+                "@type":"com.tr.csvgenerator.DataGenerator.DistributionFeature",
+                "model":"beta",
+                "params":[3,1,100,0]
+            },
+            {
+                "@type":"com.tr.csvgenerator.DataGenerator.DistributionFeature",
+                "model":"beta",
+                "params":[3,1,100,0]
+            }
+        ]
+    }
+ 
+]
+}
