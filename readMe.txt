@@ -1,4 +1,4 @@
-Psado Random Data Generator is a services for creation and visualization data set by user specification at json format.
+Pseudo Random Data Generator is a services for creation and visualization data set by user specification at json format.
 It's a Spring boot project that build with maven.
 Please take a look on the wiki page and prezi presentation for more information.
 
